@@ -61,16 +61,16 @@ func main() {
 
 	var diffuse *image.RGBA
 
-	ioreader, err := os.Open("../grid.png")
+	ioreader, err := os.Open("../../../grid.png")
 
 	if err != nil {
-		log.Fatal("Erorr opening image ../grid.png")
+		log.Fatal("Erorr opening image ../../../grid.png")
 	}
 
 	im, err := png.Decode(ioreader)
 
 	if err != nil {
-		log.Fatal("Erorr decoding image ../grid.png")
+		log.Fatal("Erorr decoding image ../../../grid.png")
 	}
 
 	switch trueim := im.(type) {
@@ -98,16 +98,16 @@ func main() {
 
 	var diffuse2 *image.RGBA
 
-	ioreader, err = os.Open("../grid2.png")
+	ioreader, err = os.Open("../../../grid2.png")
 
 	if err != nil {
-		log.Fatal("Erorr opening image ../grid2.png")
+		log.Fatal("Erorr opening image ../../../grid2.png")
 	}
 
 	im, err = png.Decode(ioreader)
 
 	if err != nil {
-		log.Fatal("Erorr decoding image ../grid2.png")
+		log.Fatal("Erorr decoding image ../../../grid2.png")
 	}
 
 	switch trueim := im.(type) {

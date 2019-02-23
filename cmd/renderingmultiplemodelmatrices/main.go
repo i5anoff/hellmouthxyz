@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/go-gl/glfw/v3.2/glfw"
 	"github.com/go-gl/gl/v3.3-core/gl"
-	"github.com/hellmouthengine/hellmouthxyz/cmd/renderingmultiplemeshtextures"
 	"log"
 	"runtime"
 	"fmt"
@@ -17,23 +16,51 @@ import (
 func main() {
 	runtime.LockOSThread()
 
-	window := common.InitGLFW()
-	common.InitOpenGL(window)
+	window := initGLFW()
+	initOpenGL(window)
 
 	points := []float32{
-		0.0, 0.5, 0.0,  	0.5, 1.0,   0.0,
-		-0.5, -0.5, 0.0,  	0.0, 0.0,   0.0,
-		0.5, -0.5, 0.0,  	1.0, 0.0,   0.0,
+		0.0, 0.1, 0.0,  	0.5, 1.0,   0.0,
+		-0.1, -0.1, 0.0,  	0.0, 0.0,   0.0,
+		0.1, -0.1, 0.0,  	1.0, 0.0,   0.0,
 
-		0.5, 0.1, 0.0,  	0.5, 1.0,   1.0,
-		0.3, 0.5, 0.0,  	0.0, 0.0,   1.0,
-		0.7, 0.5, 0.0,  	1.0, 0.0,   1.0,
+		0.0, 0.1, 0.0,  	0.5, 1.0,   1.0,
+		-0.1, -0.1, 0.0,  	0.0, 0.0,   1.0,
+		0.1, -0.1, 0.0,  	1.0, 0.0,   1.0,
 	}
 
 	indices := []uint32{
 		0,1,2,
 		3,4,5,
 	}
+
+	modelMatrix1 := []float32 {
+		1.0, 0.0, 0.0, -0.5,
+		0.0, 1.0, 0.0, -0.1,
+		0.0, 0.0, 1.0, 0.0,
+		0.0, 0.0, 0.0, 1.0,
+	}
+
+	modelMatrix2 := []float32 {
+		1.0, 0.0, 0.0, 0.5,
+		0.0, 1.0, 0.0, 0.1,
+		0.0, 0.0, 1.0, 0.0,
+		0.0, 0.0, 0.0, 1.0,
+	}
+
+	//modelMatrix1 := []float32 {
+	//	1.0, 0.0, 0.0, 0.0,
+	//	0.0, 1.0, 0.0, 0.0,
+	//	0.0, 0.0, 1.0, 0.0,
+	//	0.0, 0.0, 0.0, 1.0,
+	//}
+	//
+	//modelMatrix2 := []float32 {
+	//	1.0, 0.0, 0.0, 0.0,
+	//	0.0, 1.0, 0.0, 0.0,
+	//	0.0, 0.0, 1.0, 0.0,
+	//	0.0, 0.0, 0.0, 1.0,
+	//}
 
 	var vaoId uint32
 	gl.GenVertexArrays(1, &vaoId)
@@ -65,16 +92,16 @@ func main() {
 
 	var diffuse *image.RGBA
 
-	ioreader, err := os.Open("../../../grid.png")
+	ioreader, err := os.Open("../../grid.png")
 
 	if err != nil {
-		log.Fatal("Error opening image ../../../grid.png")
+		log.Fatal("Error opening image ../../grid.png")
 	}
 
 	im, err := png.Decode(ioreader)
 
 	if err != nil {
-		log.Fatal("Error decoding image ../../../grid.png")
+		log.Fatal("Error decoding image ../../grid.png")
 	}
 
 	switch trueim := im.(type) {
@@ -88,16 +115,16 @@ func main() {
 
 	var diffuse2 *image.RGBA
 
-	ioreader, err = os.Open("../../../grid2.png")
+	ioreader, err = os.Open("../../grid2.png")
 
 	if err != nil {
-		log.Fatal("Error opening image ../../../grid2.png")
+		log.Fatal("Error opening image ../../grid2.png")
 	}
 
 	im, err = png.Decode(ioreader)
 
 	if err != nil {
-		log.Fatal("Error decoding image ../../../grid2.png")
+		log.Fatal("Error decoding image ../../grid2.png")
 	}
 
 	switch trueim := im.(type) {
@@ -135,7 +162,35 @@ func main() {
 
 	gl.BindTexture(gl.TEXTURE_2D_ARRAY, 0)
 
+
+
+	allModelMatrixElements := []float32{}
+
+	allModelMatrixElements = append(allModelMatrixElements, modelMatrix1...)
+	allModelMatrixElements = append(allModelMatrixElements, modelMatrix2...)
+
+	var modelBuffer uint32
+
+	gl.GenBuffers(1, &modelBuffer)
+
+	gl.BindBuffer(gl.TEXTURE_BUFFER, modelBuffer)
+	gl.BufferData(gl.TEXTURE_BUFFER, len(allModelMatrixElements)*4, gl.Ptr(allModelMatrixElements), gl.STATIC_DRAW)
+	gl.BindBuffer(gl.TEXTURE_BUFFER, 0)
+
+	var modelMatrixId uint32
+
+	gl.GenTextures(1, &modelMatrixId)
+
+	gl.BindTexture(gl.TEXTURE_BUFFER, modelMatrixId)
+	gl.TexBuffer(gl.TEXTURE_BUFFER, gl.R32F, modelBuffer)
+	gl.BindTexture(gl.TEXTURE_BUFFER, 0)
+
+
+
+
 	vertexSourceAsString := `#version 330
+
+uniform samplerBuffer modelMatrices;
 
 layout (location = 0) in vec3 in_Position;
 layout (location = 1) in vec2 in_Texture;
@@ -144,10 +199,36 @@ layout (location = 2) in float in_Offset;
 out vec2 out_Texture;
 out float out_Offset;
 
+mat4 getModelMatrix(){
+  int index = int(in_Offset*16);
+  float m00 = texelFetch(modelMatrices, index + 0).r;
+  float m01 = texelFetch(modelMatrices, index + 1).r;
+  float m02 = texelFetch(modelMatrices, index + 2).r;
+  float m03 = texelFetch(modelMatrices, index + 3).r;
+  float m10 = texelFetch(modelMatrices, index + 4).r;
+  float m11 = texelFetch(modelMatrices, index + 5).r;
+  float m12 = texelFetch(modelMatrices, index + 6).r;
+  float m13 = texelFetch(modelMatrices, index + 7).r;
+  float m20 = texelFetch(modelMatrices, index + 8).r;
+  float m21 = texelFetch(modelMatrices, index + 9).r;
+  float m22 = texelFetch(modelMatrices, index + 10).r;
+  float m23 = texelFetch(modelMatrices, index + 11).r;
+  float m30 = texelFetch(modelMatrices, index + 12).r;
+  float m31 = texelFetch(modelMatrices, index + 13).r;
+  float m32 = texelFetch(modelMatrices, index + 14).r;
+  float m33 = texelFetch(modelMatrices, index + 15).r;
+  
+ return mat4(	m00, m10, m20, m30, 
+ 				m01, m11, m21, m31, 
+ 				m02, m12, m22, m32, 
+ 				m03, m13, m23, m33);
+}
+
 void main() {
   out_Texture = in_Texture;
   out_Offset = in_Offset;
-  gl_Position = vec4(in_Position, 1.0);
+  mat4 modelMatrix = getModelMatrix();
+  gl_Position = modelMatrix * vec4(in_Position, 1.0);
 }`
 
 	fragmentSourceAsString := `#version 330
@@ -182,7 +263,7 @@ void main() {
 	gl.LinkProgram(shaderProgram)
 	gl.ValidateProgram(shaderProgram)
 
-	common.CheckError()
+	CheckError()
 
 	for !window.ShouldClose() {
 		w,h := window.GetFramebufferSize()
@@ -194,10 +275,15 @@ void main() {
 		gl.UseProgram(shaderProgram)
 
 		var location int32 = -1
-		location = gl.GetUniformLocation(shaderProgram, common.GlStr("diffuse"))
+		location = gl.GetUniformLocation(shaderProgram, glStr("modelMatrices"))
 		gl.Uniform1i(location, 0)
 
+		location = gl.GetUniformLocation(shaderProgram, glStr("diffuse"))
+		gl.Uniform1i(location, 1)
+
 		gl.ActiveTexture(gl.TEXTURE0)
+		gl.BindTexture(gl.TEXTURE_BUFFER, modelMatrixId)
+		gl.ActiveTexture(gl.TEXTURE1)
 		gl.BindTexture(gl.TEXTURE_2D_ARRAY, texId)
 
 		gl.BindVertexArray(vaoId)
@@ -205,6 +291,8 @@ void main() {
 		gl.BindVertexArray(0)
 
 		gl.ActiveTexture(gl.TEXTURE0)
+		gl.BindTexture(gl.TEXTURE_BUFFER, 0)
+		gl.ActiveTexture(gl.TEXTURE1)
 		gl.BindTexture(gl.TEXTURE_2D_ARRAY, 0)
 
 		glfw.PollEvents()
