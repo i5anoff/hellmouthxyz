@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/go-gl/glfw/v3.2/glfw"
@@ -13,6 +14,15 @@ import (
 	"runtime"
 	"time"
 )
+
+type Frames struct {
+	Frames []Frame `json:"frames"`
+}
+
+type Frame struct {
+	Frame int64 `json:"frame"`
+	Matrix []float32 `json:"matrix"`
+}
 
 func main() {
 	runtime.LockOSThread()
@@ -30,43 +40,144 @@ func main() {
 		0,1,2,
 	}
 
-	modelMatrices := [][]float32 {
-		[]float32 {
-			1.0, 0.0, 0.0, -0.5,
-			0.0, 1.0, 0.0, -0.1,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, 0.0, 0.0, 1.0,
-		},
-		[]float32 {
-			1.0, 0.0, 0.0, -0.3,
-			0.0, 1.0, 0.0, -0.1,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, 0.0, 0.0, 1.0,
-		},
-		[]float32 {
-			1.0, 0.0, 0.0, -0.1,
-			0.0, 1.0, 0.0, -0.1,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, 0.0, 0.0, 1.0,
-		},
-		[]float32 {
-			1.0, 0.0, 0.0, 0.1,
-			0.0, 1.0, 0.0, -0.1,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, 0.0, 0.0, 1.0,
-		},
-		[]float32 {
-			1.0, 0.0, 0.0, 0.3,
-			0.0, 1.0, 0.0, -0.1,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, 0.0, 0.0, 1.0,
-		},
-		[]float32 {
-			1.0, 0.0, 0.0, 0.5,
-			0.0, 1.0, 0.0, -0.1,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, 0.0, 0.0, 1.0,
-		},
+	modelMatricesJSON := `{
+  "frames": [
+    {
+      "frame": 1,
+      "matrix": [
+        1,
+        0,
+        0,
+        -0.5,
+        0,
+        1,
+        0,
+        -1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 2,
+      "matrix": [
+        1,
+        0,
+        0,
+        -0.3,
+        0,
+        1,
+        0,
+        -1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 3,
+      "matrix": [
+        1,
+        0,
+        0,
+        -0.1,
+        0,
+        1,
+        0,
+        -1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 4,
+      "matrix": [
+        1,
+        0,
+        0,
+        0.1,
+        0,
+        1,
+        0,
+        -1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 5,
+      "matrix": [
+        1,
+        0,
+        0,
+        0.3,
+        0,
+        1,
+        0,
+        -1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 6,
+      "matrix": [
+        1,
+        0,
+        0,
+        0.5,
+        0,
+        1,
+        0,
+        -1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    }
+  ]
+}`
+
+	var frames Frames
+
+	bf := []byte(modelMatricesJSON)
+	err := json.Unmarshal(bf, &frames)
+
+	if err != nil {
+		log.Fatal(err.Error())
 	}
 
 	var vaoId uint32
@@ -138,8 +249,8 @@ func main() {
 	currentModelMatrixElements := []float32{}
 
 	// load all of the model matrices into a single array
-	for _, v := range modelMatrices {
-		currentModelMatrixElements = append(currentModelMatrixElements, v...)
+	for _, v := range frames.Frames {
+		currentModelMatrixElements = append(currentModelMatrixElements, v.Matrix...)
 	}
 
 	var modelBuffer uint32
@@ -249,7 +360,7 @@ void main() {
 			curFrame++
 			animationCurrentTime = 0.0
 
-			if curFrame == len(modelMatrices) {
+			if curFrame == len(frames.Frames) {
 				curFrame = 0
 			}
 		}
@@ -262,15 +373,18 @@ void main() {
 		gl.Disable(gl.BLEND)
 		gl.UseProgram(shaderProgram)
 
+		samplerIndex := int32(0)
 		var location int32 = -1
 		location = gl.GetUniformLocation(shaderProgram, common.GlStr("modelMatrices"))
-		gl.Uniform1i(location, 0)
+		gl.Uniform1i(location, samplerIndex)
+		samplerIndex++
 
 		location = gl.GetUniformLocation(shaderProgram, common.GlStr("curFrame"))
 		gl.Uniform1f(location, float32(curFrame))
 
 		location = gl.GetUniformLocation(shaderProgram, common.GlStr("diffuse"))
-		gl.Uniform1i(location, 1)
+		gl.Uniform1i(location, samplerIndex)
+		samplerIndex++
 
 		gl.ActiveTexture(gl.TEXTURE0)
 		gl.BindTexture(gl.TEXTURE_BUFFER, modelMatrixId)

@@ -11,6 +11,7 @@ const (
 	Width = 640
 	Height = 480
 	Title = "Object animation"
+	FPS = 1.0
 )
 
 func InitGLFW() *glfw.Window {

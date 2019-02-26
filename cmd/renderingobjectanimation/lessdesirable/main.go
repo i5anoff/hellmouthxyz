@@ -228,8 +228,7 @@ void main() {
 
 	common.CheckError()
 
-	animationFPS := 1.0
-	animationFrameTime := float64(float64(1000.0)/float64(animationFPS))
+	animationFrameTime := float64(float64(1000.0)/float64(common.FPS))
 	previousTick := time.Now()
 	animationCurrentTime := float64(0.0)
 
@@ -286,6 +285,7 @@ void main() {
 
 		glfw.PollEvents()
 		window.SwapBuffers()
-		common.CheckError()	}
+		common.CheckError()
+	}
 }
 
