@@ -19,12 +19,14 @@ func initGLFW() *glfw.Window {
 		panic(err)
 	}
 
+	// create a window, requesting OpenGL version 3.3 with the core profile and forward compatibility enabled
 	glfw.WindowHint(glfw.Resizable, glfw.False)
 	glfw.WindowHint(glfw.ContextVersionMajor, 3)
 	glfw.WindowHint(glfw.ContextVersionMinor, 3)
 	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 	glfw.WindowHint(glfw.OpenGLForwardCompatible, glfw.True)
 
+	// specify a 24-bit depth buffer, and an 8-bit stencil buffer; 32-bit depth buffers cause problems on old macbooks
 	glfw.WindowHint(glfw.DepthBits, 24)
 	glfw.WindowHint(glfw.StencilBits, 8)
 
@@ -48,6 +50,7 @@ func initOpenGL(window *glfw.Window) {
 	version := gl.GoStr(gl.GetString(gl.VERSION))
 	log.Println("OpenGL version", version)
 
+	// specify a color to wipe the screen with after every frame is drawn; thanks to Ethan Schoonover for Solarized
 	gl.ClearColor(0, 0.1568627451, 0.2039215686, 1)
 
 	width, height := window.GetFramebufferSize()
@@ -102,15 +105,17 @@ layout (location = 0) in vec3 in_Position;
 
 void main() {
   gl_Position = vec4(in_Position, 1.0);
-}`
+}
+`
 
 	fragmentSourceAsString := `#version 330
 
 out vec4 out_Colour;
 
 void main() {
-  out_Colour = vec4(.858823, 0.1921, 0.1803, 1.0);
-}`
+  out_Colour = vec4(0.521568, 0.603921, 0.0, 1.0);
+}
+`
 
 	vs := gl.CreateShader(gl.VERTEX_SHADER)
 	vertexShaderSource, vertexFree := gl.Strs(fmt.Sprintf("%s%s", vertexSourceAsString, "\x00"))
