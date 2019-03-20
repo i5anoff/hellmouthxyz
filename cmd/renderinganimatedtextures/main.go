@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/go-gl/glfw/v3.2/glfw"
-	"github.com/hellmouthengine/hellmouthxyz/cmd/renderingobjectanimation"
 	"image"
 	"image/draw"
 	"image/png"
@@ -289,7 +288,7 @@ void main() {
 
 		var location int32 = -1
 
-		location = gl.GetUniformLocation(shaderProgram, common.GlStr("curFrame"))
+		location = gl.GetUniformLocation(shaderProgram, GlStr("curFrame"))
 		gl.Uniform1f(location, float32(curFrame))
 
 		location = gl.GetUniformLocation(shaderProgram, GlStr("textureCoordinates"))
