@@ -209,7 +209,6 @@ uniform float curFrame;
 layout (location = 0) in vec3 in_Position;
 layout (location = 1) in float in_VertexIndex;
 
-
 out vec2 out_Texture;
 
 void main() {
