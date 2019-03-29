@@ -21,10 +21,11 @@ type Mesh struct {
 }
 
 type Vertex struct {
-	Skin map[string]float64 `json:"skin"`
+	Skin map[string]float32 `json:"skin"`
 	XYZ []float32 `json:"xyz"`
 	UV []float32 `json:"uvs"`
 	Index float32 `json:"index"`
+	TotalWeight float32 `json:"totalWeight"`
 }
 
 type Armature struct {
@@ -104,6 +105,10 @@ func (m *Matrix4f) Mul(r *Matrix4f) *Matrix4f {
 	return res
 }
 
+func (m *Matrix4f) Get1D() []float32 {
+	return []float32{m.M00,m.M01,m.M02,m.M03,   m.M10,m.M11,m.M12,m.M13,   m.M20,m.M21,m.M22,m.M23,  m.M30,m.M31,m.M32,m.M33 }
+}
+
 type IntToMatrix4fMap struct {
 	values map[int]*Matrix4f
 	keys   []int
@@ -166,6 +171,38 @@ func (e *IntToMatrix4fMap) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
+type StringToFloat32Map struct {
+	values map[string]float32
+	keys   []string
+}
+
+func NewStringToFloat32Map() *StringToFloat32Map {
+	s := new(StringToFloat32Map)
+
+	s.values = make(map[string]float32)
+	s.keys = []string{}
+
+	return s
+}
+
+func (m *StringToFloat32Map) Set(key string, value float32) {
+	_, present := m.values[key]
+
+	if !present {
+		m.keys = append(m.keys, key)
+	}
+
+	m.values[key] = value
+}
+
+func (m *StringToFloat32Map) Get(key string) float32 {
+	return m.values[key]
+}
+
+func (m *StringToFloat32Map) Keys() []string {
+	return m.keys
+}
+
 const SkinnedVertices = `{
   "Cube": {
     "indices": [
@@ -212,10 +249,8 @@ const SkinnedVertices = `{
     ],
     "coordinates": [
       {
-        "skin": {
-          "Bone": 0.9098,
-          "Bone.001": 0.0902
-        },
+        "totalWeight": 1,
+        "index": 0,
         "xyz": [
           1,
           0.9999999403953552,
@@ -225,13 +260,14 @@ const SkinnedVertices = `{
           0.33333349227905273,
           0.5000000596046448
         ],
-        "index": 0
+        "skin": {
+          "Bone": 0.9098,
+          "Bone.001": 0.0902
+        }
       },
       {
-        "skin": {
-          "Bone": 0.91731,
-          "Bone.001": 0.08269
-        },
+        "totalWeight": 1,
+        "index": 1,
         "xyz": [
           1,
           -1,
@@ -241,13 +277,14 @@ const SkinnedVertices = `{
           0.6666666865348816,
           0.5000000596046448
         ],
-        "index": 1
+        "skin": {
+          "Bone": 0.91731,
+          "Bone.001": 0.08269
+        }
       },
       {
-        "skin": {
-          "Bone": 0.9098,
-          "Bone.001": 0.0902
-        },
+        "totalWeight": 1,
+        "index": 2,
         "xyz": [
           -1.0000001192092896,
           -0.9999998211860657,
@@ -257,13 +294,14 @@ const SkinnedVertices = `{
           0.6666666269302368,
           0.7500000596046448
         ],
-        "index": 2
+        "skin": {
+          "Bone": 0.9098,
+          "Bone.001": 0.0902
+        }
       },
       {
-        "skin": {
-          "Bone": 0.91731,
-          "Bone.001": 0.08269
-        },
+        "totalWeight": 1,
+        "index": 3,
         "xyz": [
           -0.9999996423721313,
           1.0000003576278687,
@@ -273,13 +311,14 @@ const SkinnedVertices = `{
           0.33333340287208557,
           0.75
         ],
-        "index": 3
+        "skin": {
+          "Bone": 0.91731,
+          "Bone.001": 0.08269
+        }
       },
       {
-        "skin": {
-          "Bone": 0.0902,
-          "Bone.001": 0.9098
-        },
+        "totalWeight": 1,
+        "index": 4,
         "xyz": [
           1.0000004768371582,
           0.999999463558197,
@@ -289,13 +328,14 @@ const SkinnedVertices = `{
           0.9999999403953552,
           0.5000001788139343
         ],
-        "index": 4
+        "skin": {
+          "Bone": 0.0902,
+          "Bone.001": 0.9098
+        }
       },
       {
-        "skin": {
-          "Bone": 0.08269,
-          "Bone.001": 0.91731
-        },
+        "totalWeight": 1,
+        "index": 5,
         "xyz": [
           0.9999993443489075,
           -1.0000005960464478,
@@ -305,13 +345,14 @@ const SkinnedVertices = `{
           0.6666667461395264,
           0.5000002980232239
         ],
-        "index": 5
+        "skin": {
+          "Bone": 0.08269,
+          "Bone.001": 0.91731
+        }
       },
       {
-        "skin": {
-          "Bone": 0.0902,
-          "Bone.001": 0.9098
-        },
+        "totalWeight": 1,
+        "index": 6,
         "xyz": [
           -1.0000003576278687,
           -0.9999996423721313,
@@ -321,13 +362,14 @@ const SkinnedVertices = `{
           0.6666668653488159,
           0.7500002384185791
         ],
-        "index": 6
+        "skin": {
+          "Bone": 0.0902,
+          "Bone.001": 0.9098
+        }
       },
       {
-        "skin": {
-          "Bone": 0.08269,
-          "Bone.001": 0.91731
-        },
+        "totalWeight": 1,
+        "index": 7,
         "xyz": [
           -0.9999999403953552,
           1,
@@ -337,13 +379,14 @@ const SkinnedVertices = `{
           1,
           0.7500001788139343
         ],
-        "index": 7
+        "skin": {
+          "Bone": 0.08269,
+          "Bone.001": 0.91731
+        }
       },
       {
-        "skin": {
-          "Bone": 0.5,
-          "Bone.001": 0.5
-        },
+        "totalWeight": 1,
+        "index": 8,
         "xyz": [
           1.000000238418579,
           0.9999997019767761,
@@ -353,13 +396,14 @@ const SkinnedVertices = `{
           0.33333325386047363,
           0.7500000596046448
         ],
-        "index": 8
-      },
-      {
         "skin": {
           "Bone": 0.5,
           "Bone.001": 0.5
-        },
+        }
+      },
+      {
+        "totalWeight": 1,
+        "index": 9,
         "xyz": [
           0.9999996423721313,
           -1.000000238418579,
@@ -369,13 +413,14 @@ const SkinnedVertices = `{
           3.9736413270929916e-08,
           0.75
         ],
-        "index": 9
-      },
-      {
         "skin": {
           "Bone": 0.5,
           "Bone.001": 0.5
-        },
+        }
+      },
+      {
+        "totalWeight": 1,
+        "index": 10,
         "xyz": [
           -1.000000238418579,
           -0.9999997615814209,
@@ -385,13 +430,14 @@ const SkinnedVertices = `{
           0.33333343267440796,
           0.2500000596046448
         ],
-        "index": 10
-      },
-      {
         "skin": {
           "Bone": 0.5,
           "Bone.001": 0.5
-        },
+        }
+      },
+      {
+        "totalWeight": 1,
+        "index": 11,
         "xyz": [
           -0.9999997615814209,
           1.000000238418579,
@@ -401,13 +447,14 @@ const SkinnedVertices = `{
           0.6666668057441711,
           0.2500000298023224
         ],
-        "index": 11
+        "skin": {
+          "Bone": 0.5,
+          "Bone.001": 0.5
+        }
       },
       {
-        "skin": {
-          "Bone": 0.0902,
-          "Bone.001": 0.9098
-        },
+        "totalWeight": 1,
+        "index": 12,
         "xyz": [
           1.0000004768371582,
           0.999999463558197,
@@ -417,13 +464,14 @@ const SkinnedVertices = `{
           0.33333322405815125,
           1
         ],
-        "index": 12
+        "skin": {
+          "Bone": 0.0902,
+          "Bone.001": 0.9098
+        }
       },
       {
-        "skin": {
-          "Bone": 0.08269,
-          "Bone.001": 0.91731
-        },
+        "totalWeight": 1,
+        "index": 13,
         "xyz": [
           0.9999993443489075,
           -1.0000005960464478,
@@ -433,13 +481,14 @@ const SkinnedVertices = `{
           0,
           1
         ],
-        "index": 13
+        "skin": {
+          "Bone": 0.08269,
+          "Bone.001": 0.91731
+        }
       },
       {
-        "skin": {
-          "Bone": 0.5,
-          "Bone.001": 0.5
-        },
+        "totalWeight": 1,
+        "index": 14,
         "xyz": [
           0.9999996423721313,
           -1.000000238418579,
@@ -449,13 +498,14 @@ const SkinnedVertices = `{
           0.6666666865348816,
           0.25
         ],
-        "index": 14
+        "skin": {
+          "Bone": 0.5,
+          "Bone.001": 0.5
+        }
       },
       {
-        "skin": {
-          "Bone": 0.08269,
-          "Bone.001": 0.91731
-        },
+        "totalWeight": 1,
+        "index": 15,
         "xyz": [
           0.9999993443489075,
           -1.0000005960464478,
@@ -465,13 +515,14 @@ const SkinnedVertices = `{
           0.6666666865348816,
           0.5000000596046448
         ],
-        "index": 15
+        "skin": {
+          "Bone": 0.08269,
+          "Bone.001": 0.91731
+        }
       },
       {
-        "skin": {
-          "Bone": 0.0902,
-          "Bone.001": 0.9098
-        },
+        "totalWeight": 1,
+        "index": 16,
         "xyz": [
           -1.0000003576278687,
           -0.9999996423721313,
@@ -481,13 +532,14 @@ const SkinnedVertices = `{
           0.33333349227905273,
           0.5000001788139343
         ],
-        "index": 16
+        "skin": {
+          "Bone": 0.0902,
+          "Bone.001": 0.9098
+        }
       },
       {
-        "skin": {
-          "Bone": 0.5,
-          "Bone.001": 0.5
-        },
+        "totalWeight": 1,
+        "index": 17,
         "xyz": [
           -1.000000238418579,
           -0.9999997615814209,
@@ -497,13 +549,14 @@ const SkinnedVertices = `{
           1,
           0.25
         ],
-        "index": 17
+        "skin": {
+          "Bone": 0.5,
+          "Bone.001": 0.5
+        }
       },
       {
-        "skin": {
-          "Bone": 0.0902,
-          "Bone.001": 0.9098
-        },
+        "totalWeight": 1,
+        "index": 18,
         "xyz": [
           -1.0000003576278687,
           -0.9999996423721313,
@@ -513,13 +566,14 @@ const SkinnedVertices = `{
           1,
           0.5
         ],
-        "index": 18
+        "skin": {
+          "Bone": 0.0902,
+          "Bone.001": 0.9098
+        }
       },
       {
-        "skin": {
-          "Bone": 0.08269,
-          "Bone.001": 0.91731
-        },
+        "totalWeight": 1,
+        "index": 19,
         "xyz": [
           -0.9999999403953552,
           1,
@@ -529,13 +583,14 @@ const SkinnedVertices = `{
           0.6666668653488159,
           0.5
         ],
-        "index": 19
+        "skin": {
+          "Bone": 0.08269,
+          "Bone.001": 0.91731
+        }
       },
       {
-        "skin": {
-          "Bone": 0.5,
-          "Bone.001": 0.5
-        },
+        "totalWeight": 1,
+        "index": 20,
         "xyz": [
           1.000000238418579,
           0.9999997019767761,
@@ -545,13 +600,14 @@ const SkinnedVertices = `{
           0.3333333730697632,
           0.25
         ],
-        "index": 20
+        "skin": {
+          "Bone": 0.5,
+          "Bone.001": 0.5
+        }
       },
       {
-        "skin": {
-          "Bone": 0.9098,
-          "Bone.001": 0.0902
-        },
+        "totalWeight": 1,
+        "index": 21,
         "xyz": [
           1,
           0.9999999403953552,
@@ -561,13 +617,14 @@ const SkinnedVertices = `{
           0.33333340287208557,
           0.4999999701976776
         ],
-        "index": 21
+        "skin": {
+          "Bone": 0.9098,
+          "Bone.001": 0.0902
+        }
       },
       {
-        "skin": {
-          "Bone": 0.91731,
-          "Bone.001": 0.08269
-        },
+        "totalWeight": 1,
+        "index": 22,
         "xyz": [
           -0.9999996423721313,
           1.0000003576278687,
@@ -577,13 +634,14 @@ const SkinnedVertices = `{
           2.384184796255795e-07,
           0.5000000596046448
         ],
-        "index": 22
+        "skin": {
+          "Bone": 0.91731,
+          "Bone.001": 0.08269
+        }
       },
       {
-        "skin": {
-          "Bone": 0.5,
-          "Bone.001": 0.5
-        },
+        "totalWeight": 1,
+        "index": 23,
         "xyz": [
           -0.9999997615814209,
           1.000000238418579,
@@ -593,13 +651,14 @@ const SkinnedVertices = `{
           1.5894565308371966e-07,
           0.2500000596046448
         ],
-        "index": 23
+        "skin": {
+          "Bone": 0.5,
+          "Bone.001": 0.5
+        }
       },
       {
-        "skin": {
-          "Bone": 0.0902,
-          "Bone.001": 0.9098
-        },
+        "totalWeight": 1,
+        "index": 24,
         "xyz": [
           1.0000004768371582,
           0.999999463558197,
@@ -609,13 +668,14 @@ const SkinnedVertices = `{
           0.3333333134651184,
           0
         ],
-        "index": 24
+        "skin": {
+          "Bone": 0.0902,
+          "Bone.001": 0.9098
+        }
       },
       {
-        "skin": {
-          "Bone": 0.08269,
-          "Bone.001": 0.91731
-        },
+        "totalWeight": 1,
+        "index": 25,
         "xyz": [
           -0.9999999403953552,
           1,
@@ -625,13 +685,14 @@ const SkinnedVertices = `{
           0,
           5.960463766996327e-08
         ],
-        "index": 25
+        "skin": {
+          "Bone": 0.08269,
+          "Bone.001": 0.91731
+        }
       },
       {
-        "skin": {
-          "Bone": 0.9098,
-          "Bone.001": 0.0902
-        },
+        "totalWeight": 1,
+        "index": 26,
         "xyz": [
           -1.0000001192092896,
           -0.9999998211860657,
@@ -641,13 +702,14 @@ const SkinnedVertices = `{
           1,
           0
         ],
-        "index": 26
+        "skin": {
+          "Bone": 0.9098,
+          "Bone.001": 0.0902
+        }
       },
       {
-        "skin": {
-          "Bone": 0.91731,
-          "Bone.001": 0.08269
-        },
+        "totalWeight": 1,
+        "index": 27,
         "xyz": [
           -0.9999996423721313,
           1.0000003576278687,
@@ -657,13 +719,14 @@ const SkinnedVertices = `{
           0.6666667461395264,
           1.887447709236767e-08
         ],
-        "index": 27
-      },
-      {
         "skin": {
           "Bone": 0.91731,
           "Bone.001": 0.08269
-        },
+        }
+      },
+      {
+        "totalWeight": 1,
+        "index": 28,
         "xyz": [
           1,
           -1,
@@ -673,13 +736,14 @@ const SkinnedVertices = `{
           0.6666666865348816,
           0
         ],
-        "index": 28
+        "skin": {
+          "Bone": 0.91731,
+          "Bone.001": 0.08269
+        }
       },
       {
-        "skin": {
-          "Bone": 0.9098,
-          "Bone.001": 0.0902
-        },
+        "totalWeight": 1,
+        "index": 29,
         "xyz": [
           -1.0000001192092896,
           -0.9999998211860657,
@@ -689,13 +753,14 @@ const SkinnedVertices = `{
           0.33333340287208557,
           6.193295121192932e-08
         ],
-        "index": 29
-      },
-      {
         "skin": {
           "Bone": 0.9098,
           "Bone.001": 0.0902
-        },
+        }
+      },
+      {
+        "totalWeight": 1,
+        "index": 30,
         "xyz": [
           1,
           0.9999999403953552,
@@ -705,13 +770,14 @@ const SkinnedVertices = `{
           0.3333333134651184,
           0.5000000596046448
         ],
-        "index": 30
+        "skin": {
+          "Bone": 0.9098,
+          "Bone.001": 0.0902
+        }
       },
       {
-        "skin": {
-          "Bone": 0.91731,
-          "Bone.001": 0.08269
-        },
+        "totalWeight": 1,
+        "index": 31,
         "xyz": [
           1,
           -1,
@@ -721,7 +787,10 @@ const SkinnedVertices = `{
           9.934103673003847e-08,
           0.5000000596046448
         ],
-        "index": 31
+        "skin": {
+          "Bone": 0.91731,
+          "Bone.001": 0.08269
+        }
       }
     ]
   }
