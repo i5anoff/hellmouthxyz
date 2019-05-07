@@ -266,16 +266,16 @@ func main() {
 
 	var diffuse *image.RGBA
 
-	ioreader, err := os.Open("../../spritesheet.png")
+	ioreader, err := os.Open("spritesheet.png")
 
 	if err != nil {
-		log.Fatal("Error opening image ../../spritesheet.png")
+		log.Fatal("Error opening image spritesheet.png")
 	}
 
 	im, err := png.Decode(ioreader)
 
 	if err != nil {
-		log.Fatal("Error decoding image ../../spritesheet.png")
+		log.Fatal("Error decoding image spritesheet.png")
 	}
 
 	switch trueim := im.(type) {
