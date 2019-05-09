@@ -445,11 +445,34 @@ void main() {
 	defer vertexFree()
 	gl.CompileShader(vs)
 
+	var status int32
+	gl.GetShaderiv(vs, gl.COMPILE_STATUS, &status)
+
+	if status == gl.FALSE {
+		var logLength int32
+		gl.GetShaderiv(vs, gl.INFO_LOG_LENGTH, &logLength)
+
+		loge := strings.Repeat("\x00", int(logLength+1))
+		gl.GetShaderInfoLog(vs, logLength, nil, gl.Str(loge))
+		log.Fatal("%s SHADER LOG: %s", "vs", loge)
+	}
+
 	fs := gl.CreateShader(gl.FRAGMENT_SHADER)
 	fragmentShaderSource, fragmentFree := gl.Strs(fmt.Sprintf("%s%s", fragmentSourceAsString, "\x00"))
 	gl.ShaderSource(fs, 1, fragmentShaderSource, nil)
 	defer fragmentFree()
 	gl.CompileShader(fs)
+
+	gl.GetShaderiv(fs, gl.COMPILE_STATUS, &status)
+
+	if status == gl.FALSE {
+		var logLength int32
+		gl.GetShaderiv(fs, gl.INFO_LOG_LENGTH, &logLength)
+
+		loge := strings.Repeat("\x00", int(logLength+1))
+		gl.GetShaderInfoLog(fs, logLength, nil, gl.Str(loge))
+		log.Fatal("%s SHADER LOG: %s", "vs", loge)
+	}
 
 	shaderProgram := gl.CreateProgram()
 	gl.AttachShader(shaderProgram, fs)
