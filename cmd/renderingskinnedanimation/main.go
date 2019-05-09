@@ -302,7 +302,7 @@ func main() {
 	gl.GenerateMipmap(gl.TEXTURE_2D)
 
 
-	gl.BindTexture(gl.TEXTURE_2D, 0)
+	//gl.BindTexture(gl.TEXTURE_2D, 0)
 
 	modelMatrixElements := []float32{
 		1,0,0,0,
