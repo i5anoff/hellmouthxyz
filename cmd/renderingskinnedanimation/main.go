@@ -216,8 +216,6 @@ void main() {
 		gl.Viewport(0, 0, int32(width), int32(height))
 
 		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-		gl.DepthMask(true)
-		gl.Disable(gl.BLEND)
 
 		CheckError("before UseProgram")
 
