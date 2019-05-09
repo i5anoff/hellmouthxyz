@@ -558,21 +558,21 @@ void main() {
 
 		CheckError("after draw")
 
-
-		gl.ActiveTexture(gl.TEXTURE0)
-		gl.BindTexture(gl.TEXTURE_BUFFER, 0)
-
-		gl.ActiveTexture(gl.TEXTURE1)
-		gl.BindTexture(gl.TEXTURE_BUFFER, 0)
-
-		gl.ActiveTexture(gl.TEXTURE2)
-		gl.BindTexture(gl.TEXTURE_BUFFER, 0)
-
-		gl.ActiveTexture(gl.TEXTURE3)
-		gl.BindTexture(gl.TEXTURE_BUFFER, 0)
-
-		gl.ActiveTexture(gl.TEXTURE4)
-		gl.BindTexture(gl.TEXTURE_BUFFER, 0)
+		//
+		//gl.ActiveTexture(gl.TEXTURE0)
+		//gl.BindTexture(gl.TEXTURE_BUFFER, 0)
+		//
+		//gl.ActiveTexture(gl.TEXTURE1)
+		//gl.BindTexture(gl.TEXTURE_BUFFER, 0)
+		//
+		//gl.ActiveTexture(gl.TEXTURE2)
+		//gl.BindTexture(gl.TEXTURE_BUFFER, 0)
+		//
+		//gl.ActiveTexture(gl.TEXTURE3)
+		//gl.BindTexture(gl.TEXTURE_BUFFER, 0)
+		//
+		//gl.ActiveTexture(gl.TEXTURE4)
+		//gl.BindTexture(gl.TEXTURE_BUFFER, 0)
 
 		//gl.ActiveTexture(gl.TEXTURE5)
 		//gl.BindTexture(gl.TEXTURE_2D, 0)
