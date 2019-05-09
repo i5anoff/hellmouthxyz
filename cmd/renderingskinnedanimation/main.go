@@ -5,11 +5,7 @@ import (
 	"fmt"
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/go-gl/glfw/v3.2/glfw"
-	"image"
-	"image/draw"
-	"image/png"
 	"log"
-	"os"
 	"runtime"
 	"strings"
 	"time"
@@ -264,42 +260,42 @@ func main() {
 
 	gl.BindVertexArray(0)
 
-	var diffuse *image.RGBA
+	//var diffuse *image.RGBA
 
-	ioreader, err := os.Open("spritesheet.png")
+	//ioreader, err := os.Open("spritesheet.png")
+	//
+	//if err != nil {
+	//	log.Fatal("Error opening image spritesheet.png")
+	//}
+	//
+	//im, err := png.Decode(ioreader)
+	//
+	//if err != nil {
+	//	log.Fatal("Error decoding image spritesheet.png")
+	//}
+	//
+	//switch trueim := im.(type) {
+	//case *image.RGBA:
+	//	diffuse = trueim
+	//default:
+	//	copy := image.NewRGBA(trueim.Bounds())
+	//	draw.Draw(copy, trueim.Bounds(), trueim, image.Pt(0, 0), draw.Src)
+	//	diffuse = copy
+	//}
 
-	if err != nil {
-		log.Fatal("Error opening image spritesheet.png")
-	}
-
-	im, err := png.Decode(ioreader)
-
-	if err != nil {
-		log.Fatal("Error decoding image spritesheet.png")
-	}
-
-	switch trueim := im.(type) {
-	case *image.RGBA:
-		diffuse = trueim
-	default:
-		copy := image.NewRGBA(trueim.Bounds())
-		draw.Draw(copy, trueim.Bounds(), trueim, image.Pt(0, 0), draw.Src)
-		diffuse = copy
-	}
-
-	var texId uint32
-	gl.GenTextures(1, &texId)
-	gl.BindTexture(gl.TEXTURE_2D, texId)
-
-	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT)
-	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT)
-
-	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
-	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
-
-	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 512, 512, 0, gl.RGBA, gl.UNSIGNED_BYTE, gl.Ptr(diffuse.Pix))
-
-	gl.GenerateMipmap(gl.TEXTURE_2D)
+	//var texId uint32
+	//gl.GenTextures(1, &texId)
+	//gl.BindTexture(gl.TEXTURE_2D, texId)
+	//
+	//gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT)
+	//gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT)
+	//
+	//gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+	//gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
+	//
+	//gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 512, 512, 0, gl.RGBA, gl.UNSIGNED_BYTE, gl.Ptr(diffuse.Pix))
+	//
+	//gl.GenerateMipmap(gl.TEXTURE_2D)
 
 
 	//gl.BindTexture(gl.TEXTURE_2D, 0)
@@ -344,8 +340,6 @@ layout (location = 1) in vec2 in_Texture;
 layout (location = 2) in float in_ModelOffset;
 layout (location = 3) in float in_NumberOfBones;
 layout (location = 4) in float in_SkinOffset;
-
-out vec2 out_Texture;
 
 mat4 getMatrix(int index, samplerBuffer fpgbuffer){
   float m00 = texelFetch(fpgbuffer, index + 0).r;
@@ -397,7 +391,7 @@ mat4 getModelMatrix(){
 }
 
 void main() { 
-  out_Texture = in_Texture;
+  vec2 out_Texture = in_Texture;
   mat4 modelMatrix = getModelMatrix();
 
   int offset = int(in_ModelOffset * 6);
@@ -437,15 +431,11 @@ void main() {
 `
 	fragmentSourceAsString := `#version 330
 
-uniform sampler2D diffuse;
-
-in vec2 out_Texture;
-
 out vec4 out_Colour;
 
 void main() {
   
-  out_Colour = vec4(texture(diffuse,out_Texture).rgb , 1.0);
+  out_Colour = vec4(1.0, 0.0, 1.0 , 1.0);
 }
 `
 
@@ -533,8 +523,8 @@ void main() {
 		location = gl.GetUniformLocation(shaderProgram, GlStr("invertedMatrices"))
 		gl.Uniform1i(location, 4)
 
-		location = gl.GetUniformLocation(shaderProgram, GlStr("diffuse"))
-		gl.Uniform1i(location, 5)
+		//location = gl.GetUniformLocation(shaderProgram, GlStr("diffuse"))
+		//gl.Uniform1i(location, 5)
 
 
 		gl.ActiveTexture(gl.TEXTURE0)
@@ -557,8 +547,8 @@ void main() {
 		// at this point, have a getter function that loops the objects in the pass and builds their model matrices
 		gl.BindTexture(gl.TEXTURE_BUFFER, invertedMatricesID.TextureID)
 
-		gl.ActiveTexture(gl.TEXTURE5)
-		gl.BindTexture(gl.TEXTURE_2D, texId)
+		//gl.ActiveTexture(gl.TEXTURE5)
+		//gl.BindTexture(gl.TEXTURE_2D, texId)
 
 		CheckError("before draw")
 
@@ -585,8 +575,8 @@ void main() {
 		gl.ActiveTexture(gl.TEXTURE4)
 		gl.BindTexture(gl.TEXTURE_BUFFER, 0)
 
-		gl.ActiveTexture(gl.TEXTURE5)
-		gl.BindTexture(gl.TEXTURE_2D, 0)
+		//gl.ActiveTexture(gl.TEXTURE5)
+		//gl.BindTexture(gl.TEXTURE_2D, 0)
 
 		glfw.PollEvents()
 		window.SwapBuffers()
