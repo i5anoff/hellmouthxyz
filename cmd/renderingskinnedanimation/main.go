@@ -459,13 +459,13 @@ void main() {
 
 		//complete := []float32{float32(curFrame), float32(sa.EndFrame), 0.0, 0.0, 0.0, 0.0}
 
-		complete := []float32{-1.0, float32(sa.EndFrame), 0.0, 0.0, 0.0, 0.0}
+		//complete := []float32{-1.0, float32(sa.EndFrame), 0.0, 0.0, 0.0, 0.0}
 
 
 		//fmt.Println("complete is")
 	//fmt.Println(complete)
 
-		UpdateListToImage(offsetsID.BufferID, complete)
+		//UpdateListToImage(offsetsID.BufferID, complete)
 
 		CheckError("before UseProgram")
 
