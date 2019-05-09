@@ -223,17 +223,17 @@ func main() {
 	gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 32, gl.PtrOffset(0))
 	gl.EnableVertexAttribArray(0)
 
-	gl.VertexAttribPointer(1, 2, gl.FLOAT, false, 32, gl.PtrOffset(12))
-	gl.EnableVertexAttribArray(1)
-
-	gl.VertexAttribPointer(2, 1, gl.FLOAT, false, 32,  gl.PtrOffset(20))
-	gl.EnableVertexAttribArray(2)
-
-	gl.VertexAttribPointer(3, 1, gl.FLOAT, false, 32,  gl.PtrOffset(24))
-	gl.EnableVertexAttribArray(3)
-
-	gl.VertexAttribPointer(4, 1, gl.FLOAT, false, 32,  gl.PtrOffset(28))
-	gl.EnableVertexAttribArray(4)
+	//gl.VertexAttribPointer(1, 2, gl.FLOAT, false, 32, gl.PtrOffset(12))
+	//gl.EnableVertexAttribArray(1)
+	//
+	//gl.VertexAttribPointer(2, 1, gl.FLOAT, false, 32,  gl.PtrOffset(20))
+	//gl.EnableVertexAttribArray(2)
+	//
+	//gl.VertexAttribPointer(3, 1, gl.FLOAT, false, 32,  gl.PtrOffset(24))
+	//gl.EnableVertexAttribArray(3)
+	//
+	//gl.VertexAttribPointer(4, 1, gl.FLOAT, false, 32,  gl.PtrOffset(28))
+	//gl.EnableVertexAttribArray(4)
 
 	gl.BindVertexArray(0)
 
@@ -264,47 +264,10 @@ func main() {
 
 	vertexSourceAsString := `#version 330
 
-uniform samplerBuffer modelMatrices;
-
 layout (location = 0) in vec3 in_Position;
-layout (location = 1) in vec2 in_Texture;
-layout (location = 2) in float in_ModelOffset;
-layout (location = 3) in float in_NumberOfBones;
-layout (location = 4) in float in_SkinOffset;
-
-mat4 getModelMatrix(){
-  int index = int(in_ModelOffset*16);
-  float m00 = texelFetch(modelMatrices, index + 0).r;
-  float m01 = texelFetch(modelMatrices, index + 1).r;
-  float m02 = texelFetch(modelMatrices, index + 2).r;
-  float m03 = texelFetch(modelMatrices, index + 3).r;
-  float m10 = texelFetch(modelMatrices, index + 4).r;
-  float m11 = texelFetch(modelMatrices, index + 5).r;
-  float m12 = texelFetch(modelMatrices, index + 6).r;
-  float m13 = texelFetch(modelMatrices, index + 7).r;
-  float m20 = texelFetch(modelMatrices, index + 8).r;
-  float m21 = texelFetch(modelMatrices, index + 9).r;
-  float m22 = texelFetch(modelMatrices, index + 10).r;
-  float m23 = texelFetch(modelMatrices, index + 11).r;
-  float m30 = texelFetch(modelMatrices, index + 12).r;
-  float m31 = texelFetch(modelMatrices, index + 13).r;
-  float m32 = texelFetch(modelMatrices, index + 14).r;
-  float m33 = texelFetch(modelMatrices, index + 15).r;
-  
- return mat4(	m00, m10, m20, m30, 
- 				m01, m11, m21, m31, 
- 				m02, m12, m22, m32, 
- 				m03, m13, m23, m33);
-}
 
 void main() { 
-  mat4 modelMatrix = getModelMatrix();
-
-  vec3 mod_position = in_Position;
-
-  vec3 worldPos = (modelMatrix * vec4(mod_position, 1.0)).xyz;
-
-  gl_Position = vec4(worldPos, 1.0);
+  gl_Position = vec4(in_Position, 1.0);
 }
 `
 	fragmentSourceAsString := `#version 330
@@ -376,14 +339,6 @@ void main() {
 
 		CheckError("after UseProgram")
 
-		var location int32 = -1
-
-		location = gl.GetUniformLocation(shaderProgram, GlStr("modelMatrices"))
-		gl.Uniform1i(location, 0)
-
-		gl.ActiveTexture(gl.TEXTURE0)
-		gl.BindTexture(gl.TEXTURE_BUFFER, modelMatrixId)
-
 		CheckError("before draw")
 
 		gl.BindVertexArray(vaoId)
@@ -391,9 +346,6 @@ void main() {
 		gl.BindVertexArray(0)
 
 		CheckError("after draw")
-
-		gl.ActiveTexture(gl.TEXTURE0)
-		gl.BindTexture(gl.TEXTURE_BUFFER, 0)
 
 		glfw.PollEvents()
 		window.SwapBuffers()
