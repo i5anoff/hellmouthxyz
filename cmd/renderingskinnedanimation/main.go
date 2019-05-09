@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fergalgribben.com/fpg4/fpggl"
 	"fmt"
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/go-gl/glfw/v3.2/glfw"
@@ -206,9 +207,30 @@ void main() {
 	gl.AttachShader(shaderProgram, vs)
 
 	gl.LinkProgram(shaderProgram)
-	gl.ValidateProgram(shaderProgram)
 
-	CheckError("before loop")
+	gl.GetProgramiv(shaderProgram, gl.LINK_STATUS, &status)
+	if status == gl.FALSE {
+		var logLength int32
+		gl.GetProgramiv(shaderProgram, gl.INFO_LOG_LENGTH, &logLength)
+		log := strings.Repeat("\x00", int(logLength+1))
+		gl.GetProgramInfoLog(shaderProgram, logLength, nil, fpggl.Str(log))
+		fmt.Println("LINK STATUS")
+		fmt.Println(log)
+	}
+
+
+	gl.ValidateProgram(shaderProgram)
+	var vStatus int32
+	gl.GetProgramiv(shaderProgram, gl.VALIDATE_STATUS, &vStatus)
+
+	if vStatus == gl.FALSE {
+		var logLength int32
+		gl.GetProgramiv(shaderProgram, gl.INFO_LOG_LENGTH, &logLength)
+		log := strings.Repeat("\x00", int(logLength+1))
+		gl.GetProgramInfoLog(shaderProgram, logLength, nil, fpggl.Str(log))
+		fmt.Println("VALIDATE STATUS")
+		fmt.Println(log)
+	}
 
 	for !window.ShouldClose() {
 
@@ -217,25 +239,16 @@ void main() {
 
 		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 
-		CheckError("before UseProgram")
-
 		gl.UseProgram(shaderProgram)
 
 		gl.EnableVertexAttribArray(0)
-
-		CheckError("after UseProgram")
-
-		CheckError("before draw")
 
 		gl.BindVertexArray(vaoId)
 		gl.DrawElements(gl.TRIANGLES, int32(len(indices)), gl.UNSIGNED_INT, gl.PtrOffset(0));
 		gl.BindVertexArray(0)
 
-		CheckError("after draw")
-
 		glfw.PollEvents()
 		window.SwapBuffers()
-		CheckError("end of loop")
 	}
 }
 
