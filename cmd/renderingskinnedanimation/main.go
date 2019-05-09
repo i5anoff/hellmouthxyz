@@ -198,7 +198,7 @@ func main() {
 	//skinID := ListToImage2(skinForThisDimension)
 	//boneMatricesID := ListToImage2(boneMatricesForThisDimension)
 	//invertedMatricesID := ListToImage2(invertedBoneMatricesForThisDimension)
-	offsetsID := ListToImage2(meshOffsetsForThisDimension)
+	//offsetsID := ListToImage2(meshOffsetsForThisDimension)
 
 
 
