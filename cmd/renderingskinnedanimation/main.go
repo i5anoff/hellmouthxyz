@@ -86,102 +86,20 @@ func main() {
 	window := InitGLFW()
 	InitOpenGL(window)
 
-	var boneData Bones
-
-	d := []byte(BoneMatrices)
-	err := json.Unmarshal(d, &boneData)
-
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-
 	var meshes map[string]Mesh
 
-	d = []byte(SkinnedVertices)
-	err = json.Unmarshal(d, &meshes)
+	d := []byte(SkinnedVertices)
+	err := json.Unmarshal(d, &meshes)
 
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	var armatures map[string]*Armature
-
-	d = []byte(ArmatureData)
-	err = json.Unmarshal(d, &armatures)
-
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-
-	keyframes := boneData.Data["Cube"]["ArmatureAction"]
-
-	armature := armatures["Armature"]
-
-	sa := NewSkinnedAnimation(armature, keyframes)
-
-
-
-
-	mesh := meshes["Cube"]
-	boneNameToIndex := NewStringToFloat32Map()
-
-	// index to a particular bone across all bones for all animations for this mesh
-	boneIndex := float32(0)
 
 	// all bone matrices
-	boneMatricesForThisDimension := []float32{}
-	invertedBoneMatricesForThisDimension := []float32{}
-	skinForThisDimension := []float32{}
 	meshOffsetsForThisDimension := []float32{}
 
 	// access the bind matrices that were previously generated
-	bindMatrices := sa.BindMatrices
-
-	fmt.Println("*******")
-	fmt.Println(armature.Bones)
-	// loop over the bones of the armature that the mesh is parented to
-	for boneName := range armature.Bones {
-
-		// get the per frame matrices of the current bone in the armature
-		frameMatrices := bindMatrices[boneName]
-
-		for _, animationFrame := range frameMatrices.Keys() {
-			mat := frameMatrices.Get(animationFrame)
-			boneMatricesForThisDimension = append(boneMatricesForThisDimension, mat.Get1D()...)
-
-			//meshOffset += 16
-			//animationOffset += 16
-		}
-
-		// keep track of the name of the bone whose matrices we just appended to a list, along with the index with which it was iterated on
-		boneNameToIndex.Set(boneName, boneIndex)
-
-		// incremenet the bone index
-		boneIndex++
-	}
-
-	// the inverted bone matrix for each bone in the mesh's armature
-	//invertedBoneMatrixOffset := 0
-
-	// collect the inverted bone matrices for the bones in the armature based on the order they were encountered when collecting their pose matrices
-	for _, boneName := range boneNameToIndex.Keys() {
-		mat := armature.Bones[boneName].MatrixLocalInverted
-		invertedBoneMatricesForThisDimension = append(invertedBoneMatricesForThisDimension, mat.Get1D()...)
-		//invertedBoneMatrixOffset += 16
-	}
-
-	// the skin offset in multiples of 2 for the current mesh across all meshes in this render pass
-	//skinOffset := 0
-
-	// 0:0.1|1:0.9|0:0.5|1:0.5
-	for _, v := range mesh.Vertices {
-		for sk, sv := range v.Skin {
-			skinForThisDimension = append(skinForThisDimension, boneNameToIndex.Get(sk))
-			skinForThisDimension = append(skinForThisDimension, sv/v.TotalWeight)
-			//skinOffset += 2
-		}
-	}
-
 	// append all relevant offsets for this one mesh in this render pass
 	meshOffsetsForThisDimension = append(meshOffsetsForThisDimension, []float32{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}...)
 
@@ -194,7 +112,7 @@ func main() {
 	var vboiId uint32
 	gl.GenBuffers(1, &vboiId)
 
-	gl.BindVertexArray(vaoId)
+
 
 	rawVertices := meshes["Cube"].Vertices
 
@@ -214,52 +132,20 @@ func main() {
 
 	indices := meshes["Cube"].Indices
 
+	gl.BindVertexArray(vaoId)
+
 	gl.BindBuffer(gl.ARRAY_BUFFER, vboId)
 	gl.BufferData(gl.ARRAY_BUFFER, len(vertices)*4, gl.Ptr(vertices), gl.STATIC_DRAW)
 
 	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, vboiId)
 	gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, len(indices)*4, gl.Ptr(indices), gl.STATIC_DRAW)
 
-	gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 32, gl.PtrOffset(0))
+	gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 12, gl.PtrOffset(0))
 	gl.EnableVertexAttribArray(0)
 
-	//gl.VertexAttribPointer(1, 2, gl.FLOAT, false, 32, gl.PtrOffset(12))
-	//gl.EnableVertexAttribArray(1)
-	//
-	//gl.VertexAttribPointer(2, 1, gl.FLOAT, false, 32,  gl.PtrOffset(20))
-	//gl.EnableVertexAttribArray(2)
-	//
-	//gl.VertexAttribPointer(3, 1, gl.FLOAT, false, 32,  gl.PtrOffset(24))
-	//gl.EnableVertexAttribArray(3)
-	//
-	//gl.VertexAttribPointer(4, 1, gl.FLOAT, false, 32,  gl.PtrOffset(28))
-	//gl.EnableVertexAttribArray(4)
-
 	gl.BindVertexArray(0)
-
-	modelMatrixElements := []float32{
-		1,0,0,0,
-		0,1,0,0,
-		0,0,1,0,
-		0,0,0,1,
-	}
-
-	var modelMatrixId uint32
-
-	gl.GenTextures(1, &modelMatrixId)
-
-	gl.BindTexture(gl.TEXTURE_BUFFER, modelMatrixId)
-
-	var modelMatrixBuffer uint32
-
-	gl.GenBuffers(1, &modelMatrixBuffer)
-
-	gl.BindBuffer(gl.TEXTURE_BUFFER, modelMatrixBuffer)
-	gl.BufferData(gl.TEXTURE_BUFFER, len(modelMatrixElements)*4, gl.Ptr(modelMatrixElements), gl.STATIC_DRAW)
-
-	gl.TexBuffer(gl.TEXTURE_BUFFER, gl.R32F, modelMatrixBuffer)
-	gl.BindTexture(gl.TEXTURE_BUFFER, 0)
-	gl.BindBuffer(gl.TEXTURE_BUFFER, 0)
+	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
+	gl.BindBuffer(gl.ARRAY_BUFFER, 0)
 
 
 	vertexSourceAsString := `#version 330
