@@ -95,14 +95,6 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-
-	// all bone matrices
-	meshOffsetsForThisDimension := []float32{}
-
-	// access the bind matrices that were previously generated
-	// append all relevant offsets for this one mesh in this render pass
-	meshOffsetsForThisDimension = append(meshOffsetsForThisDimension, []float32{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}...)
-
 	var vaoId uint32
 	gl.GenVertexArrays(1, &vaoId)
 
@@ -113,21 +105,13 @@ func main() {
 	gl.GenBuffers(1, &vboiId)
 
 
-
 	rawVertices := meshes["Cube"].Vertices
 
 	// X, Y, Z, U, V, model offset, number of bones, skin offset
 	vertices := []float32{}
 
-	vertextSkinOffset := float32(0.0)
 	for _, v := range rawVertices {
 		vertices = append(vertices, v.XYZ...)
-		vertices = append(vertices, v.UV...)
-		vertices = append(vertices, 0) // in this example, we only have one mesh so we've hardcoded the model offset to 0
-		vertices = append(vertices, float32(len(v.Skin)))
-		vertices = append(vertices, vertextSkinOffset)
-
-		vertextSkinOffset += float32(len(v.Skin)) * 2
 	}
 
 	indices := meshes["Cube"].Indices
