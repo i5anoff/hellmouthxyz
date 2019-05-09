@@ -195,9 +195,9 @@ func main() {
 	fmt.Println(len(skinForThisDimension))
 	fmt.Println(skinForThisDimension)
 
-	skinID := ListToImage2(skinForThisDimension)
-	boneMatricesID := ListToImage2(boneMatricesForThisDimension)
-	invertedMatricesID := ListToImage2(invertedBoneMatricesForThisDimension)
+	//skinID := ListToImage2(skinForThisDimension)
+	//boneMatricesID := ListToImage2(boneMatricesForThisDimension)
+	//invertedMatricesID := ListToImage2(invertedBoneMatricesForThisDimension)
 	offsetsID := ListToImage2(meshOffsetsForThisDimension)
 
 
@@ -323,47 +323,19 @@ func main() {
 	gl.BufferData(gl.TEXTURE_BUFFER, len(modelMatrixElements)*4, gl.Ptr(modelMatrixElements), gl.STATIC_DRAW)
 
 	gl.TexBuffer(gl.TEXTURE_BUFFER, gl.R32F, modelMatrixBuffer)
-	//gl.BindTexture(gl.TEXTURE_BUFFER, 0)
+	gl.BindTexture(gl.TEXTURE_BUFFER, 0)
 	//gl.BindBuffer(gl.TEXTURE_BUFFER, 0)
 
 
 	vertexSourceAsString := `#version 330
 
 uniform samplerBuffer modelMatrices;
-uniform samplerBuffer offsets; // curFrame|numFrames|meshSkinOffset|animationOffset|meshOffset|invertedMatrixOffset
-uniform samplerBuffer skin;   // vertex -> { boneIndex : boneInfluence } | (skinOffset + in_VertexIndex) -> for i in in_NumberOfBones -> influence (passed by engine)
-uniform samplerBuffer boneMatrices; // mesh -> animation -> frame -> { boneIndex : mat4 } | in_ModelOffset -> { animation : frame : boneIndex : mat4 }
-uniform samplerBuffer invertedMatrices;
 
 layout (location = 0) in vec3 in_Position;
 layout (location = 1) in vec2 in_Texture;
 layout (location = 2) in float in_ModelOffset;
 layout (location = 3) in float in_NumberOfBones;
 layout (location = 4) in float in_SkinOffset;
-
-mat4 getMatrix(int index, samplerBuffer fpgbuffer){
-  float m00 = texelFetch(fpgbuffer, index + 0).r;
-  float m01 = texelFetch(fpgbuffer, index + 1).r;
-  float m02 = texelFetch(fpgbuffer, index + 2).r;
-  float m03 = texelFetch(fpgbuffer, index + 3).r;
-  float m10 = texelFetch(fpgbuffer, index + 4).r;
-  float m11 = texelFetch(fpgbuffer, index + 5).r;
-  float m12 = texelFetch(fpgbuffer, index + 6).r;
-  float m13 = texelFetch(fpgbuffer, index + 7).r;
-  float m20 = texelFetch(fpgbuffer, index + 8).r;
-  float m21 = texelFetch(fpgbuffer, index + 9).r;
-  float m22 = texelFetch(fpgbuffer, index + 10).r;
-  float m23 = texelFetch(fpgbuffer, index + 11).r;
-  float m30 = texelFetch(fpgbuffer, index + 12).r;
-  float m31 = texelFetch(fpgbuffer, index + 13).r;
-  float m32 = texelFetch(fpgbuffer, index + 14).r;
-  float m33 = texelFetch(fpgbuffer, index + 15).r;
-
-	return mat4(m00, m10, m20, m30,
-  				m01, m11, m21, m31,
-  				m02, m12, m22, m32,
-  				m03, m13, m23, m33);
-}
 
 mat4 getModelMatrix(){
   int index = int(in_ModelOffset*16);
@@ -394,11 +366,7 @@ void main() {
   vec2 out_Texture = in_Texture;
   mat4 modelMatrix = getModelMatrix();
 
-  int offset = int(in_ModelOffset * 6);
-  float curFrame = texelFetch(offsets, offset).r;   				// current frame of animation currently playing
   vec3 mod_position = in_Position;
-
-   
 
   vec3 worldPos = (modelMatrix * vec4(mod_position, 1.0)).xyz;
 
@@ -510,17 +478,17 @@ void main() {
 		location = gl.GetUniformLocation(shaderProgram, GlStr("modelMatrices"))
 		gl.Uniform1i(location, 0)
 
-		location = gl.GetUniformLocation(shaderProgram, GlStr("offsets"))
-		gl.Uniform1i(location, 1)
-
-		location = gl.GetUniformLocation(shaderProgram, GlStr("skin"))
-		gl.Uniform1i(location, 2)
-
-		location = gl.GetUniformLocation(shaderProgram, GlStr("boneMatrices"))
-		gl.Uniform1i(location, 3)
-
-		location = gl.GetUniformLocation(shaderProgram, GlStr("invertedMatrices"))
-		gl.Uniform1i(location, 4)
+		//location = gl.GetUniformLocation(shaderProgram, GlStr("offsets"))
+		//gl.Uniform1i(location, 1)
+		//
+		//location = gl.GetUniformLocation(shaderProgram, GlStr("skin"))
+		//gl.Uniform1i(location, 2)
+		//
+		//location = gl.GetUniformLocation(shaderProgram, GlStr("boneMatrices"))
+		//gl.Uniform1i(location, 3)
+		//
+		//location = gl.GetUniformLocation(shaderProgram, GlStr("invertedMatrices"))
+		//gl.Uniform1i(location, 4)
 
 		//location = gl.GetUniformLocation(shaderProgram, GlStr("diffuse"))
 		//gl.Uniform1i(location, 5)
@@ -530,21 +498,21 @@ void main() {
 		// at this point, have a getter function that loops the objects in the pass and builds their model matrices
 		gl.BindTexture(gl.TEXTURE_BUFFER, modelMatrixId)
 
-		gl.ActiveTexture(gl.TEXTURE1)
-		// at this point, have a getter function that loops the objects in the pass and builds their model matrices
-		gl.BindTexture(gl.TEXTURE_BUFFER, offsetsID.TextureID)
-
-		gl.ActiveTexture(gl.TEXTURE2)
-		// at this point, have a getter function that loops the objects in the pass and builds their model matrices
-		gl.BindTexture(gl.TEXTURE_BUFFER, skinID.TextureID)
-
-		gl.ActiveTexture(gl.TEXTURE3)
-		// at this point, have a getter function that loops the objects in the pass and builds their model matrices
-		gl.BindTexture(gl.TEXTURE_BUFFER, boneMatricesID.TextureID)
-
-		gl.ActiveTexture(gl.TEXTURE4)
-		// at this point, have a getter function that loops the objects in the pass and builds their model matrices
-		gl.BindTexture(gl.TEXTURE_BUFFER, invertedMatricesID.TextureID)
+		//gl.ActiveTexture(gl.TEXTURE1)
+		//// at this point, have a getter function that loops the objects in the pass and builds their model matrices
+		//gl.BindTexture(gl.TEXTURE_BUFFER, offsetsID.TextureID)
+		//
+		//gl.ActiveTexture(gl.TEXTURE2)
+		//// at this point, have a getter function that loops the objects in the pass and builds their model matrices
+		//gl.BindTexture(gl.TEXTURE_BUFFER, skinID.TextureID)
+		//
+		//gl.ActiveTexture(gl.TEXTURE3)
+		//// at this point, have a getter function that loops the objects in the pass and builds their model matrices
+		//gl.BindTexture(gl.TEXTURE_BUFFER, boneMatricesID.TextureID)
+		//
+		//gl.ActiveTexture(gl.TEXTURE4)
+		//// at this point, have a getter function that loops the objects in the pass and builds their model matrices
+		//gl.BindTexture(gl.TEXTURE_BUFFER, invertedMatricesID.TextureID)
 
 		//gl.ActiveTexture(gl.TEXTURE5)
 		//gl.BindTexture(gl.TEXTURE_2D, texId)
@@ -559,8 +527,8 @@ void main() {
 		CheckError("after draw")
 
 		//
-		//gl.ActiveTexture(gl.TEXTURE0)
-		//gl.BindTexture(gl.TEXTURE_BUFFER, 0)
+		gl.ActiveTexture(gl.TEXTURE0)
+		gl.BindTexture(gl.TEXTURE_BUFFER, 0)
 		//
 		//gl.ActiveTexture(gl.TEXTURE1)
 		//gl.BindTexture(gl.TEXTURE_BUFFER, 0)
