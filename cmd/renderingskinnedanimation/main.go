@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fergalgribben.com/fpg4/fpggl"
 	"fmt"
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/go-gl/glfw/v3.2/glfw"
@@ -213,7 +212,7 @@ void main() {
 		var logLength int32
 		gl.GetProgramiv(shaderProgram, gl.INFO_LOG_LENGTH, &logLength)
 		log := strings.Repeat("\x00", int(logLength+1))
-		gl.GetProgramInfoLog(shaderProgram, logLength, nil, fpggl.Str(log))
+		gl.GetProgramInfoLog(shaderProgram, logLength, nil, GlStr(log))
 		fmt.Println("LINK STATUS")
 		fmt.Println(log)
 	}
@@ -227,7 +226,7 @@ void main() {
 		var logLength int32
 		gl.GetProgramiv(shaderProgram, gl.INFO_LOG_LENGTH, &logLength)
 		log := strings.Repeat("\x00", int(logLength+1))
-		gl.GetProgramInfoLog(shaderProgram, logLength, nil, fpggl.Str(log))
+		gl.GetProgramInfoLog(shaderProgram, logLength, nil, GlStr(log))
 		fmt.Println("VALIDATE STATUS")
 		fmt.Println(log)
 	}
