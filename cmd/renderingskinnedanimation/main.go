@@ -8,7 +8,6 @@ import (
 	"log"
 	"runtime"
 	"strings"
-	"time"
 )
 
 const (
@@ -126,12 +125,6 @@ func main() {
 	mesh := meshes["Cube"]
 	boneNameToIndex := NewStringToFloat32Map()
 
-	//// mesh offset is the offset into the bone matrices buffer for all matrices associated with this mesh
-	//meshOffset := 0
-	//
-	//// animation offset in multiples of 16, pointing to the beginning of all per-frame bone matrices for each individual animation of this mesh
-	//animationOffset := float32(0)
-
 	// index to a particular bone across all bones for all animations for this mesh
 	boneIndex := float32(0)
 
@@ -192,22 +185,6 @@ func main() {
 	// append all relevant offsets for this one mesh in this render pass
 	meshOffsetsForThisDimension = append(meshOffsetsForThisDimension, []float32{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}...)
 
-	fmt.Println(len(skinForThisDimension))
-	fmt.Println(skinForThisDimension)
-
-	//skinID := ListToImage2(skinForThisDimension)
-	//boneMatricesID := ListToImage2(boneMatricesForThisDimension)
-	//invertedMatricesID := ListToImage2(invertedBoneMatricesForThisDimension)
-	//offsetsID := ListToImage2(meshOffsetsForThisDimension)
-
-
-
-
-
-
-
-
-
 	var vaoId uint32
 	gl.GenVertexArrays(1, &vaoId)
 
@@ -260,54 +237,12 @@ func main() {
 
 	gl.BindVertexArray(0)
 
-	//var diffuse *image.RGBA
-
-	//ioreader, err := os.Open("spritesheet.png")
-	//
-	//if err != nil {
-	//	log.Fatal("Error opening image spritesheet.png")
-	//}
-	//
-	//im, err := png.Decode(ioreader)
-	//
-	//if err != nil {
-	//	log.Fatal("Error decoding image spritesheet.png")
-	//}
-	//
-	//switch trueim := im.(type) {
-	//case *image.RGBA:
-	//	diffuse = trueim
-	//default:
-	//	copy := image.NewRGBA(trueim.Bounds())
-	//	draw.Draw(copy, trueim.Bounds(), trueim, image.Pt(0, 0), draw.Src)
-	//	diffuse = copy
-	//}
-
-	//var texId uint32
-	//gl.GenTextures(1, &texId)
-	//gl.BindTexture(gl.TEXTURE_2D, texId)
-	//
-	//gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT)
-	//gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT)
-	//
-	//gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
-	//gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
-	//
-	//gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 512, 512, 0, gl.RGBA, gl.UNSIGNED_BYTE, gl.Ptr(diffuse.Pix))
-	//
-	//gl.GenerateMipmap(gl.TEXTURE_2D)
-
-
-	//gl.BindTexture(gl.TEXTURE_2D, 0)
-
 	modelMatrixElements := []float32{
 		1,0,0,0,
 		0,1,0,0,
 		0,0,1,0,
 		0,0,0,1,
 	}
-
-
 
 	var modelMatrixId uint32
 
@@ -324,7 +259,7 @@ func main() {
 
 	gl.TexBuffer(gl.TEXTURE_BUFFER, gl.R32F, modelMatrixBuffer)
 	gl.BindTexture(gl.TEXTURE_BUFFER, 0)
-	//gl.BindBuffer(gl.TEXTURE_BUFFER, 0)
+	gl.BindBuffer(gl.TEXTURE_BUFFER, 0)
 
 
 	vertexSourceAsString := `#version 330
@@ -363,7 +298,6 @@ mat4 getModelMatrix(){
 }
 
 void main() { 
-  vec2 out_Texture = in_Texture;
   mat4 modelMatrix = getModelMatrix();
 
   vec3 mod_position = in_Position;
@@ -425,29 +359,9 @@ void main() {
 	gl.LinkProgram(shaderProgram)
 	gl.ValidateProgram(shaderProgram)
 
-	animationFrameTime := float64(float64(1000.0)/float64(sa.FPS))
-	previousTick := time.Now()
-	animationCurrentTime := float64(0.0)
-
 	CheckError("before loop")
 
-	curFrame := int64(1)
 	for !window.ShouldClose() {
-
-		timePassed := time.Now().Sub(previousTick)
-		animationCurrentTime += float64(float64(timePassed.Nanoseconds()) / float64(1000000.0))
-		previousTick = time.Now()
-
-		if animationCurrentTime > animationFrameTime {
-			curFrame++
-			animationCurrentTime = 0.0
-
-			if curFrame > sa.EndFrame {
-				curFrame = 1
-			}
-
-			fmt.Println(curFrame)
-		}
 
 		width, height := window.GetFramebufferSize()
 		gl.Viewport(0, 0, int32(width), int32(height))
@@ -455,17 +369,6 @@ void main() {
 		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 		gl.DepthMask(true)
 		gl.Disable(gl.BLEND)
-
-
-		//complete := []float32{float32(curFrame), float32(sa.EndFrame), 0.0, 0.0, 0.0, 0.0}
-
-		//complete := []float32{-1.0, float32(sa.EndFrame), 0.0, 0.0, 0.0, 0.0}
-
-
-		//fmt.Println("complete is")
-	//fmt.Println(complete)
-
-		//UpdateListToImage(offsetsID.BufferID, complete)
 
 		CheckError("before UseProgram")
 
@@ -478,72 +381,19 @@ void main() {
 		location = gl.GetUniformLocation(shaderProgram, GlStr("modelMatrices"))
 		gl.Uniform1i(location, 0)
 
-		//location = gl.GetUniformLocation(shaderProgram, GlStr("offsets"))
-		//gl.Uniform1i(location, 1)
-		//
-		//location = gl.GetUniformLocation(shaderProgram, GlStr("skin"))
-		//gl.Uniform1i(location, 2)
-		//
-		//location = gl.GetUniformLocation(shaderProgram, GlStr("boneMatrices"))
-		//gl.Uniform1i(location, 3)
-		//
-		//location = gl.GetUniformLocation(shaderProgram, GlStr("invertedMatrices"))
-		//gl.Uniform1i(location, 4)
-
-		//location = gl.GetUniformLocation(shaderProgram, GlStr("diffuse"))
-		//gl.Uniform1i(location, 5)
-
-
 		gl.ActiveTexture(gl.TEXTURE0)
-		// at this point, have a getter function that loops the objects in the pass and builds their model matrices
 		gl.BindTexture(gl.TEXTURE_BUFFER, modelMatrixId)
-
-		//gl.ActiveTexture(gl.TEXTURE1)
-		//// at this point, have a getter function that loops the objects in the pass and builds their model matrices
-		//gl.BindTexture(gl.TEXTURE_BUFFER, offsetsID.TextureID)
-		//
-		//gl.ActiveTexture(gl.TEXTURE2)
-		//// at this point, have a getter function that loops the objects in the pass and builds their model matrices
-		//gl.BindTexture(gl.TEXTURE_BUFFER, skinID.TextureID)
-		//
-		//gl.ActiveTexture(gl.TEXTURE3)
-		//// at this point, have a getter function that loops the objects in the pass and builds their model matrices
-		//gl.BindTexture(gl.TEXTURE_BUFFER, boneMatricesID.TextureID)
-		//
-		//gl.ActiveTexture(gl.TEXTURE4)
-		//// at this point, have a getter function that loops the objects in the pass and builds their model matrices
-		//gl.BindTexture(gl.TEXTURE_BUFFER, invertedMatricesID.TextureID)
-
-		//gl.ActiveTexture(gl.TEXTURE5)
-		//gl.BindTexture(gl.TEXTURE_2D, texId)
 
 		CheckError("before draw")
 
-		fmt.Println(len(indices))
 		gl.BindVertexArray(vaoId)
 		gl.DrawElements(gl.TRIANGLES, int32(len(indices)), gl.UNSIGNED_INT, gl.PtrOffset(0));
 		gl.BindVertexArray(0)
 
 		CheckError("after draw")
 
-		//
 		gl.ActiveTexture(gl.TEXTURE0)
 		gl.BindTexture(gl.TEXTURE_BUFFER, 0)
-		//
-		//gl.ActiveTexture(gl.TEXTURE1)
-		//gl.BindTexture(gl.TEXTURE_BUFFER, 0)
-		//
-		//gl.ActiveTexture(gl.TEXTURE2)
-		//gl.BindTexture(gl.TEXTURE_BUFFER, 0)
-		//
-		//gl.ActiveTexture(gl.TEXTURE3)
-		//gl.BindTexture(gl.TEXTURE_BUFFER, 0)
-		//
-		//gl.ActiveTexture(gl.TEXTURE4)
-		//gl.BindTexture(gl.TEXTURE_BUFFER, 0)
-
-		//gl.ActiveTexture(gl.TEXTURE5)
-		//gl.BindTexture(gl.TEXTURE_2D, 0)
 
 		glfw.PollEvents()
 		window.SwapBuffers()
