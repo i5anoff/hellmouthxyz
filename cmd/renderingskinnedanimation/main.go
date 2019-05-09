@@ -290,14 +290,17 @@ func main() {
 	var texId uint32
 	gl.GenTextures(1, &texId)
 	gl.BindTexture(gl.TEXTURE_2D, texId)
-	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, 736, 736, 0, gl.RGBA, gl.UNSIGNED_BYTE, gl.Ptr(diffuse.Pix))
 
-	gl.GenerateMipmap(gl.TEXTURE_2D)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT)
 
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
+
+	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, 736, 736, 0, gl.RGBA, gl.UNSIGNED_BYTE, gl.Ptr(diffuse.Pix))
+
+	gl.GenerateMipmap(gl.TEXTURE_2D)
+
 
 	gl.BindTexture(gl.TEXTURE_2D, 0)
 
