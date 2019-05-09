@@ -297,9 +297,9 @@ func main() {
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
 
-	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, 736, 736, 0, gl.RGBA, gl.UNSIGNED_BYTE, gl.Ptr(diffuse.Pix))
+	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 736, 736, 0, gl.RGBA, gl.UNSIGNED_BYTE, gl.Ptr(diffuse.Pix))
 
-	gl.GenerateMipmap(gl.TEXTURE_2D)
+	//gl.GenerateMipmap(gl.TEXTURE_2D)
 
 
 	gl.BindTexture(gl.TEXTURE_2D, 0)
