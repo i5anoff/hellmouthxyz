@@ -323,8 +323,8 @@ func main() {
 	gl.BufferData(gl.TEXTURE_BUFFER, len(modelMatrixElements)*4, gl.Ptr(modelMatrixElements), gl.STATIC_DRAW)
 
 	gl.TexBuffer(gl.TEXTURE_BUFFER, gl.R32F, modelMatrixBuffer)
-	gl.BindTexture(gl.TEXTURE_BUFFER, 0)
-	gl.BindBuffer(gl.TEXTURE_BUFFER, 0)
+	//gl.BindTexture(gl.TEXTURE_BUFFER, 0)
+	//gl.BindBuffer(gl.TEXTURE_BUFFER, 0)
 
 
 	vertexSourceAsString := `#version 330
