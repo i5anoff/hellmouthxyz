@@ -398,31 +398,7 @@ void main() {
   float curFrame = texelFetch(offsets, offset).r;   				// current frame of animation currently playing
   vec3 mod_position = in_Position;
 
-   if (curFrame != -1){
-	  float numFramesInAnimation = texelFetch(offsets, offset + 1).r;   	// offset for how many bones are in the current meshes armature SHOULD BE NUMBER OF FRAMES IN CURRENT ANIMATION
-	  float skinOffset = texelFetch(offsets, offset + 2).r; 				// how far into the universal skin object we have to go to get the skin for the current mesh
-	  float animationOffset = texelFetch(offsets, offset + 3).r;			// how far into the matrices does the current animation start?
-	  float meshAnimationOffset = texelFetch(offsets, offset + 4).r;		// how far into the matrices does the current mesh start?
-	  float invertedMatrixOffset = texelFetch(offsets, offset + 5).r;		// how far into the inverted bone matrices does this meshes matrices start?
-
-	  float vertexSkinOffset = skinOffset + in_SkinOffset;      			// get the starting point of the current vertices skin
-
-	  mod_position = vec3(0,0,0);
-
-	  for(float i=0;i<in_NumberOfBones;++i) {
-	  	int vOffset = int(vertexSkinOffset + i*2);        	// for each bone that affects this vertex..
-
-	  	float boneIndex = texelFetch(skin, vOffset).r;			// get the bones index (for fetching its mat4)
-	  	float boneInfluence = texelFetch(skin, vOffset + 1).r;	// get the bones weight
-
-	  	float matIndex = meshAnimationOffset + animationOffset +  (boneIndex * numFramesInAnimation * 16) + ((curFrame - 1) * 16);
-
-	  	mat4 boneMat = getMatrix(int(matIndex), boneMatrices);
-	  	mat4 invertedMat = getMatrix(int(invertedMatrixOffset + (boneIndex * 16)), invertedMatrices);
-
-	    mod_position = mod_position + ((boneMat * (invertedMat * vec4(in_Position, 1.0))) *  boneInfluence ).xyz;
-	  }
-  }
+   
 
   vec3 worldPos = (modelMatrix * vec4(mod_position, 1.0)).xyz;
 
