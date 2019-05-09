@@ -299,7 +299,7 @@ func main() {
 
 	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 736, 736, 0, gl.RGBA, gl.UNSIGNED_BYTE, gl.Ptr(diffuse.Pix))
 
-	//gl.GenerateMipmap(gl.TEXTURE_2D)
+	gl.GenerateMipmap(gl.TEXTURE_2D)
 
 
 	gl.BindTexture(gl.TEXTURE_2D, 0)
@@ -311,21 +311,25 @@ func main() {
 		0,0,0,1,
 	}
 
-	var modelMatrixBuffer uint32
 
-	gl.GenBuffers(1, &modelMatrixBuffer)
-
-	gl.BindBuffer(gl.TEXTURE_BUFFER, modelMatrixBuffer)
-	gl.BufferData(gl.TEXTURE_BUFFER, len(modelMatrixElements)*4, gl.Ptr(modelMatrixElements), gl.STATIC_DRAW)
-	gl.BindBuffer(gl.TEXTURE_BUFFER, 0)
 
 	var modelMatrixId uint32
 
 	gl.GenTextures(1, &modelMatrixId)
 
 	gl.BindTexture(gl.TEXTURE_BUFFER, modelMatrixId)
+
+	var modelMatrixBuffer uint32
+
+	gl.GenBuffers(1, &modelMatrixBuffer)
+
+	gl.BindBuffer(gl.TEXTURE_BUFFER, modelMatrixBuffer)
+	gl.BufferData(gl.TEXTURE_BUFFER, len(modelMatrixElements)*4, gl.Ptr(modelMatrixElements), gl.STATIC_DRAW)
+
 	gl.TexBuffer(gl.TEXTURE_BUFFER, gl.R32F, modelMatrixBuffer)
 	gl.BindTexture(gl.TEXTURE_BUFFER, 0)
+	gl.BindBuffer(gl.TEXTURE_BUFFER, 0)
+
 
 	vertexSourceAsString := `#version 330
 
