@@ -223,6 +223,8 @@ void main() {
 
 		gl.UseProgram(shaderProgram)
 
+		gl.EnableVertexAttribArray(0)
+
 		CheckError("after UseProgram")
 
 		CheckError("before draw")
