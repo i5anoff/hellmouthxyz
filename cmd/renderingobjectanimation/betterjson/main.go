@@ -207,16 +207,16 @@ func main() {
 
 	var diffuse *image.RGBA
 
-	ioreader, err := os.Open("../../../grid.png")
+	ioreader, err := os.Open("grid.png")
 
 	if err != nil {
-		log.Fatal("Error opening image ../../../grid.png")
+		log.Fatal("Error opening image grid.png")
 	}
 
 	im, err := png.Decode(ioreader)
 
 	if err != nil {
-		log.Fatal("Error decoding image ../../../grid.png")
+		log.Fatal("Error decoding image grid.png")
 	}
 
 	switch trueim := im.(type) {

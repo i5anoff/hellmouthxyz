@@ -1,3 +1,3 @@
 #!/bin/bash
 
-go build -o main ./cmd/renderingskinnedanimation/*.go
+go build -o main ./cmd/renderingobjectanimation/*.go
