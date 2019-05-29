@@ -1,3 +1,3 @@
 #!/bin/bash
 
-go build -o main ./cmd/renderingobjectanimation/*.go
+GO111MODULE=on go build -o main ./cmd/renderingobjectanimation/*.go
