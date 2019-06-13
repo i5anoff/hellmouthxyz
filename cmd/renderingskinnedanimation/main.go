@@ -19,7 +19,9 @@ const (
 	Width = 480
 	Height = 480
 	Title = "Skinned animation"
-	FPS = 1.0
+    VertexData = `{"Cube": {"indices": [1, 3, 0, 5, 11, 6, 4, 12, 0, 5, 2, 13, 14, 7, 15, 16, 17, 18, 10, 9, 8, 4, 19, 20, 21, 22, 7, 17, 23, 18, 1, 24, 3, 5, 25, 11, 4, 20, 12, 5, 6, 2, 14, 21, 7, 16, 26, 17, 10, 27, 9, 4, 28, 19, 21, 29, 22, 17, 30, 23], "coordinates": [{"xyz": [1.0, 0.0, -1.0], "index": 0, "uvs": [0.33333, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}}, {"xyz": [1.0, 0.0, 1.0], "index": 1, "uvs": [0.66667, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [-1.0, 0.0, 1.0], "index": 2, "uvs": [0.66667, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}}, {"xyz": [-1.0, 0.0, -1.0], "index": 3, "uvs": [0.33333, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [1.0, 2.0, -1.0], "index": 4, "uvs": [0.33333, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [1.0, 2.0, 1.0], "index": 5, "uvs": [0.33333, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [-1.0, 2.0, 1.0], "index": 6, "uvs": [0.66667, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [-1.0, 2.0, -1.0], "index": 7, "uvs": [0.33333, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [1.0, 4.0, -1.0], "index": 8, "uvs": [1.0, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [1.0, 4.0, 1.0], "index": 9, "uvs": [0.66667, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}, {"xyz": [-1.0, 4.0, -1.0], "index": 10, "uvs": [1.0, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}, {"xyz": [-1.0, 4.0, 1.0], "index": 11, "uvs": [0.66667, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [1.0, 0.0, 1.0], "index": 12, "uvs": [0.0, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [1.0, 0.0, 1.0], "index": 13, "uvs": [0.33333, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [-1.0, 0.0, 1.0], "index": 14, "uvs": [0.0, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}}, {"xyz": [-1.0, 0.0, -1.0], "index": 15, "uvs": [0.33333, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [1.0, 0.0, -1.0], "index": 16, "uvs": [0.66667, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}}, {"xyz": [-1.0, 2.0, -1.0], "index": 17, "uvs": [1.0, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [1.0, 2.0, -1.0], "index": 18, "uvs": [0.66667, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [1.0, 4.0, 1.0], "index": 19, "uvs": [0.0, 1.0], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}, {"xyz": [1.0, 2.0, 1.0], "index": 20, "uvs": [0.0, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [-1.0, 2.0, 1.0], "index": 21, "uvs": [0.0, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [-1.0, 4.0, -1.0], "index": 22, "uvs": [0.33333, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}, {"xyz": [1.0, 4.0, -1.0], "index": 23, "uvs": [0.66667, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [-1.0, 0.0, 1.0], "index": 24, "uvs": [0.66667, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}}, {"xyz": [1.0, 4.0, 1.0], "index": 25, "uvs": [0.33333, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}, {"xyz": [-1.0, 0.0, -1.0], "index": 26, "uvs": [1.0, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [-1.0, 4.0, 1.0], "index": 27, "uvs": [0.66667, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [1.0, 4.0, -1.0], "index": 28, "uvs": [0.33333, 1.0], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [-1.0, 4.0, 1.0], "index": 29, "uvs": [0.0, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [-1.0, 4.0, -1.0], "index": 30, "uvs": [1.0, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}]}}`
+    ArmatureData = `{"Armature": {"bones": {"Bone": {"matrix_local": [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0], "name": "Bone", "matrix_local_inverted": [1.0, -0.0, 0.0, -0.0, -0.0, 0.0, 1.0, 0.0, 0.0, -1.0, 0.0, -0.0, -0.0, 0.0, -0.0, 1.0]}, "Bone.001": {"parentName": "Bone", "matrix_local": [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 2.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0], "name": "Bone.001", "matrix_local_inverted": [1.0, -0.0, 0.0, -0.0, -0.0, 0.0, 1.0, 0.0, 0.0, -1.0, 0.0, 2.0, -0.0, 0.0, -0.0, 1.0]}}, "matrix_world": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "name": "Armature"}}`
+    AnimationMatrices = `{"Cube": {"ArmatureAction": {"Bone": {"1": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "2": [0.9763, 0.0, -0.21644, 0.0, 0.0, 1.0, 0.0, 0.0, 0.21644, 0.0, 0.9763, 0.0, 0.0, 0.0, 0.0, 1.0], "3": [0.90631, 0.0, -0.42262, 0.0, 0.0, 1.0, 0.0, 0.0, 0.42262, 0.0, 0.90631, 0.0, 0.0, 0.0, 0.0, 1.0]}, "Bone.001": {"1": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "2": [0.9763, 0.0, -0.21644, 0.0, 0.0, 1.0, 0.0, 0.0, 0.21644, 0.0, 0.9763, 0.0, 0.0, 0.0, 0.0, 1.0], "3": [0.90631, 0.0, -0.42262, 0.0, 0.0, 1.0, 0.0, 0.0, 0.42262, 0.0, 0.90631, 0.0, 0.0, 0.0, 0.0, 1.0]}}}}`
 )
 
 func InitGLFW() *glfw.Window {
@@ -59,7 +61,7 @@ func InitOpenGL(window *glfw.Window) {
 	gl.ClearColor(0, 0.1568627451, 0.2039215686, 1)
 
 	width, height := window.GetFramebufferSize()
-	//width, height := window.GetSize()
+
 	gl.Viewport(0, 0, int32(width), int32(height))
 	gl.FrontFace(gl.CCW)
 	gl.PolygonMode(gl.FRONT_AND_BACK, gl.FILL)
@@ -85,103 +87,71 @@ func CheckError() {
 	}
 }
 
-
 func main() {
 	runtime.LockOSThread()
 
+	// initialise glfw and opengl
 	window := InitGLFW()
 	InitOpenGL(window)
 
-	meshes := `{"Cube": {"indices": [1, 3, 0, 5, 11, 6, 4, 12, 0, 5, 2, 13, 14, 7, 15, 16, 17, 18, 10, 9, 8, 4, 19, 20, 21, 22, 7, 17, 23, 18, 1, 24, 3, 5, 25, 11, 4, 20, 12, 5, 6, 2, 14, 21, 7, 16, 26, 17, 10, 27, 9, 4, 28, 19, 21, 29, 22, 17, 30, 23], "coordinates": [{"xyz": [1.0, 0.0, -1.0], "index": 0, "uvs": [0.33333, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}}, {"xyz": [1.0, 0.0, 1.0], "index": 1, "uvs": [0.66667, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [-1.0, 0.0, 1.0], "index": 2, "uvs": [0.66667, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}}, {"xyz": [-1.0, 0.0, -1.0], "index": 3, "uvs": [0.33333, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [1.0, 2.0, -1.0], "index": 4, "uvs": [0.33333, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [1.0, 2.0, 1.0], "index": 5, "uvs": [0.33333, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [-1.0, 2.0, 1.0], "index": 6, "uvs": [0.66667, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [-1.0, 2.0, -1.0], "index": 7, "uvs": [0.33333, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [1.0, 4.0, -1.0], "index": 8, "uvs": [1.0, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [1.0, 4.0, 1.0], "index": 9, "uvs": [0.66667, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}, {"xyz": [-1.0, 4.0, -1.0], "index": 10, "uvs": [1.0, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}, {"xyz": [-1.0, 4.0, 1.0], "index": 11, "uvs": [0.66667, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [1.0, 0.0, 1.0], "index": 12, "uvs": [0.0, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [1.0, 0.0, 1.0], "index": 13, "uvs": [0.33333, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [-1.0, 0.0, 1.0], "index": 14, "uvs": [0.0, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}}, {"xyz": [-1.0, 0.0, -1.0], "index": 15, "uvs": [0.33333, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [1.0, 0.0, -1.0], "index": 16, "uvs": [0.66667, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}}, {"xyz": [-1.0, 2.0, -1.0], "index": 17, "uvs": [1.0, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [1.0, 2.0, -1.0], "index": 18, "uvs": [0.66667, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [1.0, 4.0, 1.0], "index": 19, "uvs": [0.0, 1.0], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}, {"xyz": [1.0, 2.0, 1.0], "index": 20, "uvs": [0.0, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [-1.0, 2.0, 1.0], "index": 21, "uvs": [0.0, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [-1.0, 4.0, -1.0], "index": 22, "uvs": [0.33333, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}, {"xyz": [1.0, 4.0, -1.0], "index": 23, "uvs": [0.66667, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [-1.0, 0.0, 1.0], "index": 24, "uvs": [0.66667, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}}, {"xyz": [1.0, 4.0, 1.0], "index": 25, "uvs": [0.33333, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}, {"xyz": [-1.0, 0.0, -1.0], "index": 26, "uvs": [1.0, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [-1.0, 4.0, 1.0], "index": 27, "uvs": [0.66667, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [1.0, 4.0, -1.0], "index": 28, "uvs": [0.33333, 1.0], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [-1.0, 4.0, 1.0], "index": 29, "uvs": [0.0, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [-1.0, 4.0, -1.0], "index": 30, "uvs": [1.0, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}]}}`
 
-	armatureData := `{"Armature": {"bones": {"Bone": {"matrix_local": [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0], "name": "Bone", "matrix_local_inverted": [1.0, -0.0, 0.0, -0.0, -0.0, 0.0, 1.0, 0.0, 0.0, -1.0, 0.0, -0.0, -0.0, 0.0, -0.0, 1.0]}, "Bone.001": {"parentName": "Bone", "matrix_local": [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 2.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0], "name": "Bone.001", "matrix_local_inverted": [1.0, -0.0, 0.0, -0.0, -0.0, 0.0, 1.0, 0.0, 0.0, -1.0, 0.0, 2.0, -0.0, 0.0, -0.0, 1.0]}}, "matrix_world": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "name": "Armature"}}`
-	//
-	boneMatrices := `{"Cube": {"ArmatureAction": {"Bone": {"1": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "2": [0.9763, 0.0, -0.21644, 0.0, 0.0, 1.0, 0.0, 0.0, 0.21644, 0.0, 0.9763, 0.0, 0.0, 0.0, 0.0, 1.0], "3": [0.90631, 0.0, -0.42262, 0.0, 0.0, 1.0, 0.0, 0.0, 0.42262, 0.0, 0.90631, 0.0, 0.0, 0.0, 0.0, 1.0]}, "Bone.001": {"1": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "2": [0.9763, 0.0, -0.21644, 0.0, 0.0, 1.0, 0.0, 0.0, 0.21644, 0.0, 0.9763, 0.0, 0.0, 0.0, 0.0, 1.0], "3": [0.90631, 0.0, -0.42262, 0.0, 0.0, 1.0, 0.0, 0.0, 0.42262, 0.0, 0.90631, 0.0, 0.0, 0.0, 0.0, 1.0]}}}}`
+	// unmarshal vertex data
+	var vertexData map[string]Mesh
 
-	// load vertices into buffer
-	// load indices into buffer
-	// set up simple render pass with simple mesh first
-
-	var mesh map[string]Mesh
-
-	bf := []byte(meshes)
-	err := json.Unmarshal(bf, &mesh)
+	vertexByteArray := []byte(VertexData)
+	err := json.Unmarshal(vertexByteArray, &vertexData)
 
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	var boneData map[string]map[string]map[string]*IntToMatrix4fMap // awful
+	// unmarshal animation data
+	var animationData map[string]map[string]map[string]*IntToMatrix4fMap
 
-	d := []byte(boneMatrices)
-	err = json.Unmarshal(d, &boneData)
-
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-
-	var armatures map[string]*Armature
-
-	d = []byte(armatureData)
-	err = json.Unmarshal(d, &armatures)
+	animationByteArray := []byte(AnimationMatrices)
+	err = json.Unmarshal(animationByteArray, &animationData)
 
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	//cube := mesh["Cube"]
+	// unmarshal armature data
+	var armatureData map[string]*Armature
 
-	keyframes := boneData["Cube"]["ArmatureAction"]
+	armatureByteArray := []byte(ArmatureData)
+	err = json.Unmarshal(armatureByteArray, &armatureData)
 
-	fmt.Println("keyframes")
-	fmt.Println(keyframes)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 
-	armature := armatures["Armature"]
 
-	sa := NewSkinnedAnimation(armature, keyframes)
+	// initialise what will eventually be texture buffers bound to our shader program
+	boneMatrixBuffer := []float32{}
+	invertedBoneMatrixBuffer := []float32{}
+	skinBuffer := []float32{}
+	offsetBuffer := []float32{}
 
-	cube := mesh["Cube"]
+
+	armatureActionFrames := animationData["Cube"]["ArmatureAction"]
+	armature := armatureData["Armature"]
+	// create a new skinned animation instance using the armature data, and the animation data
+	skinnedAnimation := NewSkinnedAnimation(armature, armatureActionFrames)
+	// fetch the bind matrices that were generated in the skinned animation instance
+	bindMatrices := skinnedAnimation.BindMatrices
 
 	boneNameToIndex := NewStringToFloat32Map()
-
-
-	//// mesh offset is the offset into the bone matrices buffer for all matrices associated with this mesh
-	//meshOffset := 0
-	//
-	//// animation offset in multiples of 16, pointing to the beginning of all per-frame bone matrices for each individual animation of this mesh
-	//animationOffset := float32(0)
-
-	// index to a particular bone across all bones for all animations for this mesh
 	boneIndex := float32(0)
 
-	// all bone matrices
-	boneMatricesForThisDimension := []float32{}
-	invertedBoneMatricesForThisDimension := []float32{}
-	skinForThisDimension := []float32{}
-	meshOffsetsForThisDimension := []float32{}
-
-	// access the bind matrices that were previously generated
-	bindMatrices := sa.BindMatrices
-
-	fmt.Println("*******")
-	fmt.Println(armature.Bones)
 	// loop over the bones of the armature that the mesh is parented to
 	for boneName := range armature.Bones {
 
-		// get the per frame matrices of the current bone in the armature
+		// get the per-frame matrices of the current bone in the armature
 		frameMatrices := bindMatrices[boneName]
 
-		fmt.Println("frameMatrices")
-		fmt.Println(frameMatrices)
-
 		for _, animationFrame := range frameMatrices.Keys() {
-			fmt.Println("animationFrame")
-			fmt.Println(animationFrame)
-			mat := frameMatrices.Get(animationFrame)
-			boneMatricesForThisDimension = append(boneMatricesForThisDimension, mat.Get1D()...)
-
-			//meshOffset += 16
-			//animationOffset += 16
+			frameMatrix := frameMatrices.Get(animationFrame)
+			boneMatrixBuffer = append(boneMatrixBuffer, frameMatrix.Get1D()...)
 		}
 
 		// keep track of the name of the bone whose matrices we just appended to a list, along with the index with which it was iterated on
@@ -191,75 +161,58 @@ func main() {
 		boneIndex++
 	}
 
-	// the inverted bone matrix for each bone in the mesh's armature
-	//invertedBoneMatrixOffset := 0
-
 	// collect the inverted bone matrices for the bones in the armature based on the order they were encountered when collecting their pose matrices
 	for _, boneName := range boneNameToIndex.Keys() {
-		mat := armature.Bones[boneName].MatrixLocalInverted
-		invertedBoneMatricesForThisDimension = append(invertedBoneMatricesForThisDimension, mat.Get1D()...)
-		//invertedBoneMatrixOffset += 16
+		matrixLocalInverted := armature.Bones[boneName].MatrixLocalInverted
+		invertedBoneMatrixBuffer = append(invertedBoneMatrixBuffer, matrixLocalInverted.Get1D()...)
 	}
 
-	// the skin offset in multiples of 2 for the current mesh across all meshes in this render pass
-	//skinOffset := 0
+	cubeVertexData := vertexData["Cube"]
 
-	// 0:0.1|1:0.9|0:0.5|1:0.5
-	for _, v := range cube.Coordinates {
+	for _, v := range cubeVertexData.Coordinates {
 		for sk, sv := range v.Skin {
-			skinForThisDimension = append(skinForThisDimension, boneNameToIndex.Get(sk))
-			skinForThisDimension = append(skinForThisDimension, sv/v.TotalWeight)
-			//skinOffset += 2
+			skinBuffer = append(skinBuffer, boneNameToIndex.Get(sk))
+			skinBuffer = append(skinBuffer, sv/v.TotalWeight)
 		}
 	}
 
-	// append all relevant offsets for this one mesh in this render pass
-	meshOffsetsForThisDimension = append(meshOffsetsForThisDimension, []float32{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}...)
+	offsetBuffer = append(offsetBuffer, []float32{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}...)
 
-	fmt.Println(len(skinForThisDimension))
-	fmt.Println(skinForThisDimension)
-
-	skinID := ListToImage2(skinForThisDimension)
-	boneMatricesID := ListToImage2(boneMatricesForThisDimension)
-	invertedMatricesID := ListToImage2(invertedBoneMatricesForThisDimension)
-	offsetsID := ListToImage2(meshOffsetsForThisDimension)
+	skinBufferID := ArrayToTexture(skinBuffer)
+	boneMatrixsBufferID := ArrayToTexture(boneMatrixBuffer)
+	invertedBoneMatrixBufferID := ArrayToTexture(invertedBoneMatrixBuffer)
+	offsetBufferID := ArrayToTexture(offsetBuffer)
 
 
 
+	// load all the vertex attributes for all vertices into a float array, which will later become a vertex buffer
+	points := make([]float32, len(cubeVertexData.Coordinates) * 8) // 8 = 3 location coordinates + 2 texture coordinates + 1 mesh offset + 1 skin length + 1 skin offset
 
+	currentPointElement := 0
 
-
-
-
-	points := make([]float32, len(cube.Coordinates) * 8) // 8 = 3 location coordinates + 2 texture coordinates + 1 mesh offset + 1 skin length + 1 skin offset
-
-	i := 0
 	skinOffset := float32(0.0)
-	for _, c := range cube.Coordinates{
-		points[i] = c.Vertices[0]
-		i++
-		points[i] = c.Vertices[1]
-		i++
-		points[i] = c.Vertices[2]
-		i++
-		points[i] = c.Textures[0]
-		i++
-		points[i] = 1 - c.Textures[1]
-		i++
-		points[i] = 0 // hardcode the mesh offset to 0 since we only have one mesh to render
-		i++
-		points[i] = float32(len(c.Skin))
-		i++
-		points[i] = skinOffset
-		i++
 
-		skinOffset += float32(len(c.Skin)) * 2
+	for _, coordinate := range cubeVertexData.Coordinates{
+		points[currentPointElement] = coordinate.Vertices[0]
+		currentPointElement++
+		points[currentPointElement] = coordinate.Vertices[1]
+		currentPointElement++
+		points[currentPointElement] = coordinate.Vertices[2]
+		currentPointElement++
+		points[currentPointElement] = coordinate.Textures[0]
+		currentPointElement++
+		points[currentPointElement] = 1 - coordinate.Textures[1]
+		currentPointElement++
+		points[currentPointElement] = 0 // hardcode the mesh offset to 0 since we only have one mesh to render
+		currentPointElement++
+		points[currentPointElement] = float32(len(coordinate.Skin))
+		currentPointElement++
+		points[currentPointElement] = skinOffset
+		currentPointElement++
+
+		skinOffset += float32(len(coordinate.Skin)) * 2
 	}
 
-
-
-
-	// try rendering jum verts / 5?
 
 	var vaoId uint32
 	gl.GenVertexArrays(1, &vaoId)
@@ -272,30 +225,37 @@ func main() {
 
 	gl.BindVertexArray(vaoId)
 
+	// pass the vertex attribute float array to an array buffer
 	gl.BindBuffer(gl.ARRAY_BUFFER, vboId)
 	gl.BufferData(gl.ARRAY_BUFFER, len(points)*4, gl.Ptr(points), gl.STATIC_DRAW)
 
 	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, vboiId)
-	gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, len(cube.Indices)*4, gl.Ptr(cube.Indices), gl.STATIC_DRAW)
+	gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, len(cubeVertexData.Indices)*4, gl.Ptr(cubeVertexData.Indices), gl.STATIC_DRAW)
 
+	// define the layout of a single vertex; define the first 3 floats as one attribute (xyz location)
 	gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 32, gl.PtrOffset(0))
 	gl.EnableVertexAttribArray(0)
 
+	// define the next 2 floats as one attribute (uv texture coordinates)
 	gl.VertexAttribPointer(1, 2, gl.FLOAT, false, 32, gl.PtrOffset(12))
 	gl.EnableVertexAttribArray(1)
 
+	// define the next float as one attribute (mesh offset)
 	gl.VertexAttribPointer(2, 1, gl.FLOAT, false, 32, gl.PtrOffset(20))
 	gl.EnableVertexAttribArray(2)
 
+	// define the next float as one attribute (number of bones)
 	gl.VertexAttribPointer(3, 1, gl.FLOAT, false, 32, gl.PtrOffset(24))
 	gl.EnableVertexAttribArray(3)
 
+	// define the next float as one attribute (skin offset)
 	gl.VertexAttribPointer(4, 1, gl.FLOAT, false, 32, gl.PtrOffset(28))
 	gl.EnableVertexAttribArray(4)
 
-
 	gl.BindVertexArray(0)
 
+
+	// load in a texture to apply to the mesh
 	var diffuse *image.RGBA
 
 	ioreader, err := os.Open("../../grid.png")
@@ -336,6 +296,8 @@ func main() {
 
 	gl.BindTexture(gl.TEXTURE_2D, 0)
 
+
+	// create an identity matrix
 	modelMatrixElements := []float32{
 		1,0,0,0,
 		0,1,0,0,
@@ -500,38 +462,26 @@ void main() {
 	gl.LinkProgram(shaderProgram)
 	gl.ValidateProgram(shaderProgram)
 
-	CheckError()
+	projectionMatrix := NewProjectionMatrix()
 
-	animationFrameTime := float64(float64(1000.0)/float64(sa.FPS))
+	// initialise the view matrix as an identity matrix
+	viewMatrix := new(Matrix4f)
+	viewMatrix.M00 = 1
+	viewMatrix.M11 = 1
+	viewMatrix.M22 = 1
+	viewMatrix.M33 = 1
+
+	// the view matrix is effectively the inverted camera position
+	viewMatrix.M03 = 0
+	viewMatrix.M13 = -2
+	viewMatrix.M23 = -10
+
+
+	animationFrameTime := float64(float64(1000.0)/float64(skinnedAnimation.FPS))
 	previousTick := time.Now()
 	animationCurrentTime := float64(0.0)
-
-	//CheckError("before loop")
-
 	curFrame := int64(1)
 
-	proj := NewProjectionMatrix()
-
-	translationMatrix := new(Matrix4f)
-	translationMatrix.M00 = 1
-	translationMatrix.M11 = 1
-	translationMatrix.M22 = 1
-	translationMatrix.M33 = 1
-
-	translationMatrix.M03 = 0
-	translationMatrix.M13 = -2
-	translationMatrix.M23 = -10
-
-	//translationMatrix.M30 = 0
-	//translationMatrix.M31 = 0
-	//translationMatrix.M32 = 0
-
-	//
-	//rotationMatrix := c.Rot.ToRotationMatrix()
-	//
-	//rotationMatrix.Transpose()
-	//
-	view := translationMatrix
 
 	for !window.ShouldClose() {
 
@@ -543,11 +493,9 @@ void main() {
 			curFrame++
 			animationCurrentTime = 0.0
 
-			if curFrame > sa.EndFrame {
+			if curFrame > skinnedAnimation.EndFrame {
 				curFrame = 1
 			}
-
-			//fmt.Println(curFrame)
 		}
 
 		width, height := window.GetFramebufferSize()
@@ -557,26 +505,19 @@ void main() {
 		gl.DepthMask(true)
 		gl.Disable(gl.BLEND)
 
-		//complete := []float32{float32(curFrame), float32(sa.EndFrame), 0.0, 0.0, 0.0, 0.0}
-		complete := []float32{float32(curFrame), float32(sa.EndFrame), 0.0, 0.0, 0.0, 0.0}
-		//complete := []float32{-1, float32(sa.EndFrame), 0.0, 0.0, 0.0, 0.0}
+		complete := []float32{float32(curFrame), float32(skinnedAnimation.EndFrame), 0.0, 0.0, 0.0, 0.0}
 
-
-		//fmt.Println("complete is")
-		//fmt.Println(complete)
-
-		UpdateListToImage(offsetsID.BufferID, complete)
-
-		CheckError()
+		UpdateArrayToTexture(offsetBufferID.BufferID, complete)
 
 		gl.UseProgram(shaderProgram)
 		var location int32 = -1
 
+		// set uniform values in the shader program
 		location = gl.GetUniformLocation(shaderProgram, GlStr("projectionMatrix"))
-		gl.UniformMatrix4fv(location, 1, true, &proj.Get1D()[0])
+		gl.UniformMatrix4fv(location, 1, true, &projectionMatrix.Get1D()[0])
 
 		location = gl.GetUniformLocation(shaderProgram, GlStr("viewMatrix"))
-		gl.UniformMatrix4fv(location, 1, true, &view.Get1D()[0])
+		gl.UniformMatrix4fv(location, 1, true, &viewMatrix.Get1D()[0])
 
 		location = gl.GetUniformLocation(shaderProgram, GlStr("modelMatrices"))
 		gl.Uniform1i(location, 0)
@@ -596,43 +537,30 @@ void main() {
 		location = gl.GetUniformLocation(shaderProgram, GlStr("diffuse"))
 		gl.Uniform1i(location, 5)
 
-		//fmt.Println(location)
-		//fmt.Println(samplerIndex)
 
-		//gl.ActiveTexture(gl.TEXTURE0)
-		//gl.BindTexture(gl.TEXTURE_BUFFER, modelMatrixId)
-
+		// bind the buffers at the appropriate texture slots
 		gl.ActiveTexture(gl.TEXTURE0)
-		// at this point, have a getter function that loops the objects in the pass and builds their model matrices
 		gl.BindTexture(gl.TEXTURE_BUFFER, modelMatrixId)
 
 		gl.ActiveTexture(gl.TEXTURE1)
-		// at this point, have a getter function that loops the objects in the pass and builds their model matrices
-		gl.BindTexture(gl.TEXTURE_BUFFER, offsetsID.TextureID)
+		gl.BindTexture(gl.TEXTURE_BUFFER, offsetBufferID.TextureID)
 
 		gl.ActiveTexture(gl.TEXTURE2)
-		// at this point, have a getter function that loops the objects in the pass and builds their model matrices
-		gl.BindTexture(gl.TEXTURE_BUFFER, skinID.TextureID)
+		gl.BindTexture(gl.TEXTURE_BUFFER, skinBufferID.TextureID)
 
 		gl.ActiveTexture(gl.TEXTURE3)
-		// at this point, have a getter function that loops the objects in the pass and builds their model matrices
-		gl.BindTexture(gl.TEXTURE_BUFFER, boneMatricesID.TextureID)
+		gl.BindTexture(gl.TEXTURE_BUFFER, boneMatrixsBufferID.TextureID)
 
 		gl.ActiveTexture(gl.TEXTURE4)
-		// at this point, have a getter function that loops the objects in the pass and builds their model matrices
-		gl.BindTexture(gl.TEXTURE_BUFFER, invertedMatricesID.TextureID)
+		gl.BindTexture(gl.TEXTURE_BUFFER, invertedBoneMatrixBufferID.TextureID)
 
 		gl.ActiveTexture(gl.TEXTURE5)
 		gl.BindTexture(gl.TEXTURE_2D, texId)
 
 		gl.BindVertexArray(vaoId)
-		//gl.DrawElements(gl.TRIANGLES, int32(len(cube.Indices)), gl.UNSIGNED_INT, gl.PtrOffset(0));
-		gl.DrawElements(gl.TRIANGLES, int32(len(cube.Indices)), gl.UNSIGNED_INT, gl.PtrOffset(0));
-
+		gl.DrawElements(gl.TRIANGLES, int32(len(cubeVertexData.Indices)), gl.UNSIGNED_INT, gl.PtrOffset(0));
 		gl.BindVertexArray(0)
 
-		//gl.ActiveTexture(gl.TEXTURE0)
-		//gl.BindTexture(gl.TEXTURE_BUFFER, 0)
 		gl.ActiveTexture(gl.TEXTURE0)
 		gl.BindTexture(gl.TEXTURE_BUFFER, 0)
 
