@@ -1,4 +1,4 @@
-package main
+package animation
 
 import "time"
 
@@ -17,10 +17,10 @@ type SkinnedAnimation struct {
 	MeshName        string
 	StartFrame      int64
 	EndFrame        int64
-	FPS 			int64
+	FPS             int64
 }
 
-func NewSkinnedAnimation(armature *Armature, keyframes map[string]*IntToMatrix4fMap) *SkinnedAnimation {
+func NewSkinnedAnimation(armature *Armature, keyframes map[string]*IntToMatrix4fMap, endFrame, fps int64) *SkinnedAnimation {
 	sa := &SkinnedAnimation{
 		map[string]*IntToMatrix4fMap{},
 		map[string]*Matrix4f{},
@@ -34,8 +34,8 @@ func NewSkinnedAnimation(armature *Armature, keyframes map[string]*IntToMatrix4f
 		0.0,
 		"Cube",
 		1,
-		3,
-		1,
+		endFrame,
+		fps,
 	}
 
 	sa.generateFrames(keyframes)

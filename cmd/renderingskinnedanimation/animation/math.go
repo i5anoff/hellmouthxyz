@@ -1,4 +1,4 @@
-package main
+package animation
 
 import (
 	"encoding/json"
@@ -33,10 +33,10 @@ func (e *Matrix4f) UnmarshalJSON(b []byte) error {
 	c := []float32{}
 
 	if err := json.Unmarshal(b, &c); err == nil {
-		x := &Matrix4f{	c[0],c[1],c[2],c[3],
-			c[4],c[5],c[6],c[7],
-			c[8],c[9],c[10],c[11],
-			c[12],c[13],c[14],c[15],}
+		x := &Matrix4f{c[0], c[1], c[2], c[3],
+			c[4], c[5], c[6], c[7],
+			c[8], c[9], c[10], c[11],
+			c[12], c[13], c[14], c[15]}
 		*e = *x
 	} else {
 		return err
@@ -72,7 +72,7 @@ func (m *Matrix4f) Mul(r *Matrix4f) *Matrix4f {
 }
 
 func (m *Matrix4f) Get1D() []float32 {
-	return []float32{m.M00,m.M01,m.M02,m.M03,   m.M10,m.M11,m.M12,m.M13,   m.M20,m.M21,m.M22,m.M23,  m.M30,m.M31,m.M32,m.M33 }
+	return []float32{m.M00, m.M01, m.M02, m.M03, m.M10, m.M11, m.M12, m.M13, m.M20, m.M21, m.M22, m.M23, m.M30, m.M31, m.M32, m.M33}
 }
 
 func CoTangent(angle float32) float32 {
@@ -83,7 +83,7 @@ func DegreesToRadians(degrees float32) float32 {
 	return degrees * float32(math.Pi/180)
 }
 
-func NewProjectionMatrix() *Matrix4f {
+func NewProjectionMatrix(width, height int) *Matrix4f {
 	projectionMatrix := new(Matrix4f)
 
 	projectionMatrix.M00 = 1
@@ -92,7 +92,7 @@ func NewProjectionMatrix() *Matrix4f {
 	projectionMatrix.M33 = 1
 
 	var fieldOfView = float32(80.0)
-	var aspectRatio = float32(float32(Width) / float32(Height))
+	var aspectRatio = float32(float32(width) / float32(height))
 	near_plane := 0.1
 	far_plane := 300.0
 
@@ -109,7 +109,6 @@ func NewProjectionMatrix() *Matrix4f {
 
 	return projectionMatrix
 }
-
 
 func ArrayToTexture(modelMatrixElements []float32) *TextureAndBufferIds {
 

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/go-gl/glfw/v3.2/glfw"
+	. "github.com/hellmouthengine/hellmouthxyz/cmd/renderingskinnedanimation/animation"
 	"image"
 	"image/draw"
 	"image/png"
@@ -16,12 +17,12 @@ import (
 )
 
 const (
-	Width = 480
-	Height = 480
-	Title = "Skinned animation"
-    VertexData = `{"Cube": {"indices": [1, 3, 0, 5, 11, 6, 4, 12, 0, 5, 2, 13, 14, 7, 15, 16, 17, 18, 10, 9, 8, 4, 19, 20, 21, 22, 7, 17, 23, 18, 1, 24, 3, 5, 25, 11, 4, 20, 12, 5, 6, 2, 14, 21, 7, 16, 26, 17, 10, 27, 9, 4, 28, 19, 21, 29, 22, 17, 30, 23], "coordinates": [{"xyz": [1.0, 0.0, -1.0], "index": 0, "uvs": [0.33333, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}}, {"xyz": [1.0, 0.0, 1.0], "index": 1, "uvs": [0.66667, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [-1.0, 0.0, 1.0], "index": 2, "uvs": [0.66667, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}}, {"xyz": [-1.0, 0.0, -1.0], "index": 3, "uvs": [0.33333, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [1.0, 2.0, -1.0], "index": 4, "uvs": [0.33333, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [1.0, 2.0, 1.0], "index": 5, "uvs": [0.33333, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [-1.0, 2.0, 1.0], "index": 6, "uvs": [0.66667, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [-1.0, 2.0, -1.0], "index": 7, "uvs": [0.33333, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [1.0, 4.0, -1.0], "index": 8, "uvs": [1.0, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [1.0, 4.0, 1.0], "index": 9, "uvs": [0.66667, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}, {"xyz": [-1.0, 4.0, -1.0], "index": 10, "uvs": [1.0, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}, {"xyz": [-1.0, 4.0, 1.0], "index": 11, "uvs": [0.66667, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [1.0, 0.0, 1.0], "index": 12, "uvs": [0.0, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [1.0, 0.0, 1.0], "index": 13, "uvs": [0.33333, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [-1.0, 0.0, 1.0], "index": 14, "uvs": [0.0, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}}, {"xyz": [-1.0, 0.0, -1.0], "index": 15, "uvs": [0.33333, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [1.0, 0.0, -1.0], "index": 16, "uvs": [0.66667, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}}, {"xyz": [-1.0, 2.0, -1.0], "index": 17, "uvs": [1.0, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [1.0, 2.0, -1.0], "index": 18, "uvs": [0.66667, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [1.0, 4.0, 1.0], "index": 19, "uvs": [0.0, 1.0], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}, {"xyz": [1.0, 2.0, 1.0], "index": 20, "uvs": [0.0, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [-1.0, 2.0, 1.0], "index": 21, "uvs": [0.0, 0.25], "totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}}, {"xyz": [-1.0, 4.0, -1.0], "index": 22, "uvs": [0.33333, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}, {"xyz": [1.0, 4.0, -1.0], "index": 23, "uvs": [0.66667, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [-1.0, 0.0, 1.0], "index": 24, "uvs": [0.66667, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}}, {"xyz": [1.0, 4.0, 1.0], "index": 25, "uvs": [0.33333, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}, {"xyz": [-1.0, 0.0, -1.0], "index": 26, "uvs": [1.0, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}}, {"xyz": [-1.0, 4.0, 1.0], "index": 27, "uvs": [0.66667, 0.75], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [1.0, 4.0, -1.0], "index": 28, "uvs": [0.33333, 1.0], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [-1.0, 4.0, 1.0], "index": 29, "uvs": [0.0, 0.0], "totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}}, {"xyz": [-1.0, 4.0, -1.0], "index": 30, "uvs": [1.0, 0.5], "totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}}]}}`
-    ArmatureData = `{"Armature": {"bones": {"Bone": {"matrix_local": [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0], "name": "Bone", "matrix_local_inverted": [1.0, -0.0, 0.0, -0.0, -0.0, 0.0, 1.0, 0.0, 0.0, -1.0, 0.0, -0.0, -0.0, 0.0, -0.0, 1.0]}, "Bone.001": {"parentName": "Bone", "matrix_local": [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 2.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0], "name": "Bone.001", "matrix_local_inverted": [1.0, -0.0, 0.0, -0.0, -0.0, 0.0, 1.0, 0.0, 0.0, -1.0, 0.0, 2.0, -0.0, 0.0, -0.0, 1.0]}}, "matrix_world": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "name": "Armature"}}`
-    AnimationMatrices = `{"Cube": {"ArmatureAction": {"Bone": {"1": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "2": [0.9763, 0.0, -0.21644, 0.0, 0.0, 1.0, 0.0, 0.0, 0.21644, 0.0, 0.9763, 0.0, 0.0, 0.0, 0.0, 1.0], "3": [0.90631, 0.0, -0.42262, 0.0, 0.0, 1.0, 0.0, 0.0, 0.42262, 0.0, 0.90631, 0.0, 0.0, 0.0, 0.0, 1.0]}, "Bone.001": {"1": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "2": [0.9763, 0.0, -0.21644, 0.0, 0.0, 1.0, 0.0, 0.0, 0.21644, 0.0, 0.9763, 0.0, 0.0, 0.0, 0.0, 1.0], "3": [0.90631, 0.0, -0.42262, 0.0, 0.0, 1.0, 0.0, 0.0, 0.42262, 0.0, 0.90631, 0.0, 0.0, 0.0, 0.0, 1.0]}}}}`
+	Width             = 480
+	Height            = 480
+	Title             = "Skinned animation"
+	VertexData        = `{"Cube": {"indices": [1, 3, 0, 5, 11, 6, 4, 12, 0, 5, 2, 13, 14, 7, 15, 16, 17, 18, 10, 9, 8, 4, 19, 20, 21, 22, 7, 17, 23, 18, 1, 24, 3, 5, 25, 11, 4, 20, 12, 5, 6, 2, 14, 21, 7, 16, 26, 17, 10, 27, 9, 4, 28, 19, 21, 29, 22, 17, 30, 23], "coordinates": [{"totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}, "xyz": [1.0, 0.0, -1.0], "index": 0, "uvs": [0.33333, 0.5]}, {"totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}, "xyz": [1.0, 0.0, 1.0], "index": 1, "uvs": [0.66667, 0.5]}, {"totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}, "xyz": [-1.0, 0.0, 1.0], "index": 2, "uvs": [0.66667, 0.5]}, {"totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}, "xyz": [-1.0, 0.0, -1.0], "index": 3, "uvs": [0.33333, 0.75]}, {"totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}, "xyz": [1.0, 2.0, -1.0], "index": 4, "uvs": [0.33333, 0.75]}, {"totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}, "xyz": [1.0, 2.0, 1.0], "index": 5, "uvs": [0.33333, 0.25]}, {"totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}, "xyz": [-1.0, 2.0, 1.0], "index": 6, "uvs": [0.66667, 0.25]}, {"totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}, "xyz": [-1.0, 2.0, -1.0], "index": 7, "uvs": [0.33333, 0.25]}, {"totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}, "xyz": [1.0, 4.0, -1.0], "index": 8, "uvs": [1.0, 0.5]}, {"totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}, "xyz": [1.0, 4.0, 1.0], "index": 9, "uvs": [0.66667, 0.5]}, {"totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}, "xyz": [-1.0, 4.0, -1.0], "index": 10, "uvs": [1.0, 0.75]}, {"totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}, "xyz": [-1.0, 4.0, 1.0], "index": 11, "uvs": [0.66667, 0.0]}, {"totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}, "xyz": [1.0, 0.0, 1.0], "index": 12, "uvs": [0.0, 0.5]}, {"totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}, "xyz": [1.0, 0.0, 1.0], "index": 13, "uvs": [0.33333, 0.5]}, {"totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}, "xyz": [-1.0, 0.0, 1.0], "index": 14, "uvs": [0.0, 0.5]}, {"totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}, "xyz": [-1.0, 0.0, -1.0], "index": 15, "uvs": [0.33333, 0.5]}, {"totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}, "xyz": [1.0, 0.0, -1.0], "index": 16, "uvs": [0.66667, 0.0]}, {"totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}, "xyz": [-1.0, 2.0, -1.0], "index": 17, "uvs": [1.0, 0.25]}, {"totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}, "xyz": [1.0, 2.0, -1.0], "index": 18, "uvs": [0.66667, 0.25]}, {"totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}, "xyz": [1.0, 4.0, 1.0], "index": 19, "uvs": [0.0, 1.0]}, {"totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}, "xyz": [1.0, 2.0, 1.0], "index": 20, "uvs": [0.0, 0.75]}, {"totalWeight": 1.0, "skin": {"Bone": 0.5, "Bone.001": 0.5}, "xyz": [-1.0, 2.0, 1.0], "index": 21, "uvs": [0.0, 0.25]}, {"totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}, "xyz": [-1.0, 4.0, -1.0], "index": 22, "uvs": [0.33333, 0.0]}, {"totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}, "xyz": [1.0, 4.0, -1.0], "index": 23, "uvs": [0.66667, 0.5]}, {"totalWeight": 1.0, "skin": {"Bone": 0.9098, "Bone.001": 0.0902}, "xyz": [-1.0, 0.0, 1.0], "index": 24, "uvs": [0.66667, 0.75]}, {"totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}, "xyz": [1.0, 4.0, 1.0], "index": 25, "uvs": [0.33333, 0.0]}, {"totalWeight": 1.0, "skin": {"Bone": 0.91731, "Bone.001": 0.08269}, "xyz": [-1.0, 0.0, -1.0], "index": 26, "uvs": [1.0, 0.0]}, {"totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}, "xyz": [-1.0, 4.0, 1.0], "index": 27, "uvs": [0.66667, 0.75]}, {"totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}, "xyz": [1.0, 4.0, -1.0], "index": 28, "uvs": [0.33333, 1.0]}, {"totalWeight": 1.0, "skin": {"Bone": 0.0902, "Bone.001": 0.9098}, "xyz": [-1.0, 4.0, 1.0], "index": 29, "uvs": [0.0, 0.0]}, {"totalWeight": 1.0, "skin": {"Bone": 0.08269, "Bone.001": 0.91731}, "xyz": [-1.0, 4.0, -1.0], "index": 30, "uvs": [1.0, 0.5]}]}}`
+	ArmatureData      = `{"Armature": {"name": "Armature", "matrix_world": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "bones": {"Bone": {"name": "Bone", "matrix_local_inverted": [1.0, -0.0, 0.0, -0.0, -0.0, 0.0, 1.0, 0.0, 0.0, -1.0, 0.0, -0.0, -0.0, 0.0, -0.0, 1.0], "matrix_local": [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]}, "Bone.001": {"name": "Bone.001", "parentName": "Bone", "matrix_local_inverted": [1.0, -0.0, 0.0, -0.0, -0.0, 0.0, 1.0, 0.0, 0.0, -1.0, 0.0, 2.0, -0.0, 0.0, -0.0, 1.0], "matrix_local": [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 2.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]}}}}`
+	AnimationMatrices = `{"Cube": {"ArmatureAction": {"Bone": {"1": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "2": [0.9763, 0.0, -0.21644, 0.0, 0.0, 1.0, 0.0, 0.0, 0.21644, 0.0, 0.9763, 0.0, 0.0, 0.0, 0.0, 1.0], "3": [0.90631, 0.0, -0.42262, 0.0, 0.0, 1.0, 0.0, 0.0, 0.42262, 0.0, 0.90631, 0.0, 0.0, 0.0, 0.0, 1.0]}, "Bone.001": {"1": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "2": [0.9763, 0.0, -0.21644, 0.0, 0.0, 1.0, 0.0, 0.0, 0.21644, 0.0, 0.9763, 0.0, 0.0, 0.0, 0.0, 1.0], "3": [0.90631, 0.0, -0.42262, 0.0, 0.0, 1.0, 0.0, 0.0, 0.42262, 0.0, 0.90631, 0.0, 0.0, 0.0, 0.0, 1.0]}}}}`
 )
 
 func InitGLFW() *glfw.Window {
@@ -58,7 +59,7 @@ func InitOpenGL(window *glfw.Window) {
 	version := gl.GoStr(gl.GetString(gl.VERSION))
 	log.Println("OpenGL version", version)
 
-	gl.ClearColor(0, 0.1568627451, 0.2039215686, 1)
+	gl.ClearColor(0.9921568627, 0.968627451, 0.8901960784, 1)
 
 	width, height := window.GetFramebufferSize()
 
@@ -76,7 +77,6 @@ func GlStr(str string) *uint8 {
 	return gl.Str(str)
 }
 
-
 func CheckError() {
 
 	err := gl.GetError()
@@ -93,7 +93,6 @@ func main() {
 	// initialise glfw and opengl
 	window := InitGLFW()
 	InitOpenGL(window)
-
 
 	// unmarshal vertex data
 	var vertexData map[string]Mesh
@@ -125,18 +124,16 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-
 	// initialise what will eventually be texture buffers bound to our shader program
 	boneMatrixBuffer := []float32{}
 	invertedBoneMatrixBuffer := []float32{}
 	skinBuffer := []float32{}
 	offsetBuffer := []float32{}
 
-
 	armatureActionFrames := animationData["Cube"]["ArmatureAction"]
 	armature := armatureData["Armature"]
 	// create a new skinned animation instance using the armature data, and the animation data
-	skinnedAnimation := NewSkinnedAnimation(armature, armatureActionFrames)
+	skinnedAnimation := NewSkinnedAnimation(armature, armatureActionFrames, 3, 1)
 	// fetch the bind matrices that were generated in the skinned animation instance
 	bindMatrices := skinnedAnimation.BindMatrices
 
@@ -183,16 +180,14 @@ func main() {
 	invertedBoneMatrixBufferID := ArrayToTexture(invertedBoneMatrixBuffer)
 	offsetBufferID := ArrayToTexture(offsetBuffer)
 
-
-
 	// load all the vertex attributes for all vertices into a float array, which will later become a vertex buffer
-	points := make([]float32, len(cubeVertexData.Coordinates) * 8) // 8 = 3 location coordinates + 2 texture coordinates + 1 mesh offset + 1 skin length + 1 skin offset
+	points := make([]float32, len(cubeVertexData.Coordinates)*8) // 8 = 3 location coordinates + 2 texture coordinates + 1 mesh offset + 1 skin length + 1 skin offset
 
 	currentPointElement := 0
 
 	skinOffset := float32(0.0)
 
-	for _, coordinate := range cubeVertexData.Coordinates{
+	for _, coordinate := range cubeVertexData.Coordinates {
 		points[currentPointElement] = coordinate.Vertices[0]
 		currentPointElement++
 		points[currentPointElement] = coordinate.Vertices[1]
@@ -212,7 +207,6 @@ func main() {
 
 		skinOffset += float32(len(coordinate.Skin)) * 2
 	}
-
 
 	var vaoId uint32
 	gl.GenVertexArrays(1, &vaoId)
@@ -254,20 +248,19 @@ func main() {
 
 	gl.BindVertexArray(0)
 
-
 	// load in a texture to apply to the mesh
 	var diffuse *image.RGBA
 
-	ioreader, err := os.Open("../../grid.png")
+	ioreader, err := os.Open("../../../grid.png")
 
 	if err != nil {
-		log.Fatal("Error opening image ../../grid.png")
+		log.Fatal("Error opening image ../../../grid.png")
 	}
 
 	im, err := png.Decode(ioreader)
 
 	if err != nil {
-		log.Fatal("Error decoding image ../../grid.png")
+		log.Fatal("Error decoding image ../../../grid.png")
 	}
 
 	switch trueim := im.(type) {
@@ -296,13 +289,12 @@ func main() {
 
 	gl.BindTexture(gl.TEXTURE_2D, 0)
 
-
 	// create an identity matrix
 	modelMatrixElements := []float32{
-		1,0,0,0,
-		0,1,0,0,
-		0,0,1,0,
-		0,0,0,1,
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1,
 	}
 
 	var modelMatrixBuffer uint32
@@ -364,34 +356,9 @@ mat4 getMatrix(int index, samplerBuffer fpgbuffer){
   				m03, m13, m23, m33);
 }
 
-mat4 getModelMatrix(){
-  int index = int(in_ModelOffset*16);
-  float m00 = texelFetch(modelMatrices, index + 0).r;
-  float m01 = texelFetch(modelMatrices, index + 1).r;
-  float m02 = texelFetch(modelMatrices, index + 2).r;
-  float m03 = texelFetch(modelMatrices, index + 3).r;
-  float m10 = texelFetch(modelMatrices, index + 4).r;
-  float m11 = texelFetch(modelMatrices, index + 5).r;
-  float m12 = texelFetch(modelMatrices, index + 6).r;
-  float m13 = texelFetch(modelMatrices, index + 7).r;
-  float m20 = texelFetch(modelMatrices, index + 8).r;
-  float m21 = texelFetch(modelMatrices, index + 9).r;
-  float m22 = texelFetch(modelMatrices, index + 10).r;
-  float m23 = texelFetch(modelMatrices, index + 11).r;
-  float m30 = texelFetch(modelMatrices, index + 12).r;
-  float m31 = texelFetch(modelMatrices, index + 13).r;
-  float m32 = texelFetch(modelMatrices, index + 14).r;
-  float m33 = texelFetch(modelMatrices, index + 15).r;
-  
- return mat4(	m00, m10, m20, m30, 
- 				m01, m11, m21, m31, 
- 				m02, m12, m22, m32, 
- 				m03, m13, m23, m33);
-}
-
 void main() { 
   out_Texture = in_Texture;
-  mat4 modelMatrix = getModelMatrix();
+  mat4 modelMatrix = getMatrix(int(in_ModelOffset*16), modelMatrices);
 
   int offset = int(in_ModelOffset * 6);
   float curFrame = texelFetch(offsets, offset).r;   				// current frame of animation currently playing
@@ -462,7 +429,7 @@ void main() {
 	gl.LinkProgram(shaderProgram)
 	gl.ValidateProgram(shaderProgram)
 
-	projectionMatrix := NewProjectionMatrix()
+	projectionMatrix := NewProjectionMatrix(Width, Height)
 
 	// initialise the view matrix as an identity matrix
 	viewMatrix := new(Matrix4f)
@@ -473,15 +440,13 @@ void main() {
 
 	// the view matrix is effectively the inverted camera position
 	viewMatrix.M03 = 0
-	viewMatrix.M13 = -2
+	viewMatrix.M13 = -4
 	viewMatrix.M23 = -10
 
-
-	animationFrameTime := float64(float64(1000.0)/float64(skinnedAnimation.FPS))
+	animationFrameTime := float64(float64(1000.0) / float64(skinnedAnimation.FPS))
 	previousTick := time.Now()
 	animationCurrentTime := float64(0.0)
 	curFrame := int64(1)
-
 
 	for !window.ShouldClose() {
 
@@ -537,7 +502,6 @@ void main() {
 		location = gl.GetUniformLocation(shaderProgram, GlStr("diffuse"))
 		gl.Uniform1i(location, 5)
 
-
 		// bind the buffers at the appropriate texture slots
 		gl.ActiveTexture(gl.TEXTURE0)
 		gl.BindTexture(gl.TEXTURE_BUFFER, modelMatrixId)
@@ -558,7 +522,7 @@ void main() {
 		gl.BindTexture(gl.TEXTURE_2D, texId)
 
 		gl.BindVertexArray(vaoId)
-		gl.DrawElements(gl.TRIANGLES, int32(len(cubeVertexData.Indices)), gl.UNSIGNED_INT, gl.PtrOffset(0));
+		gl.DrawElements(gl.TRIANGLES, int32(len(cubeVertexData.Indices)), gl.UNSIGNED_INT, gl.PtrOffset(0))
 		gl.BindVertexArray(0)
 
 		gl.ActiveTexture(gl.TEXTURE0)
@@ -584,4 +548,3 @@ void main() {
 		CheckError()
 	}
 }
-

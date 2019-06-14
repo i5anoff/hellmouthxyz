@@ -1,4 +1,4 @@
-package main
+package animation
 
 import (
 	"encoding/json"
@@ -8,16 +8,16 @@ import (
 )
 
 type Mesh struct {
-	Indices []uint32 `json:"indices"`
+	Indices     []uint32     `json:"indices"`
 	Coordinates []Coordinate `json:"coordinates"`
 }
 
 type Coordinate struct {
-	Index int `json:"index"`
-	Vertices []float32 `json:"xyz"`
-	Textures []float32 `json:"uvs"`
-	Skin map[string]float32 `json:"skin"`
-	TotalWeight float32 `json:"totalWeight"`
+	Index       int                `json:"index"`
+	Vertices    []float32          `json:"xyz"`
+	Textures    []float32          `json:"uvs"`
+	Skin        map[string]float32 `json:"skin"`
+	TotalWeight float32            `json:"totalWeight"`
 }
 
 type Armature struct {
@@ -26,10 +26,10 @@ type Armature struct {
 }
 
 type Bone struct {
-	Name                string  	`json:"name"`
-	ParentName          string		`json:"parentName"`
-	MatrixLocal         *Matrix4f 	`json:"matrix_local"`
-	MatrixLocalInverted *Matrix4f 	`json:"matrix_local_inverted"`
+	Name                string    `json:"name"`
+	ParentName          string    `json:"parentName"`
+	MatrixLocal         *Matrix4f `json:"matrix_local"`
+	MatrixLocalInverted *Matrix4f `json:"matrix_local_inverted"`
 }
 
 type IntToMatrix4fMap struct {
@@ -69,7 +69,6 @@ func (m *IntToMatrix4fMap) Get(key int) *Matrix4f {
 func (m *IntToMatrix4fMap) Keys() []int {
 	return m.keys
 }
-
 
 func (e *IntToMatrix4fMap) UnmarshalJSON(b []byte) error {
 
